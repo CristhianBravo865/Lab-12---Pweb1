@@ -1,6 +1,7 @@
 Mini Wikipedia
 
 Descripción
+
 Proyecto desarrollado para el curso Programación Web I, cuyo objetivo es crear una página web similar a Wikipedia.
 
 Funcionalidades
