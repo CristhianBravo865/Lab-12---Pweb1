@@ -9,22 +9,27 @@ RUN apt-get update && \
 # Habilita el módulo CGI de Apache
 RUN a2enmod cgi
 
-# Crear directorios para HTML y CGI
-RUN mkdir -p /var/www/html && mkdir -p /usr/lib/cgi-bin
+# Crear directorio para HTML
+RUN mkdir -p /var/www/html
 
-# Dar permisos a los directorios necesarios
-RUN chmod -R 755 /var/www/html && chmod +x /usr/lib/cgi-bin
+# Dar permisos a la carpeta /var/www/html para copiar archivos
+RUN chmod -R 755 /var/www/html
 
-# Copiar archivos HTML y CSS al directorio del servidor web
-COPY ./html/ /var/www/html/
-COPY ./css/ /var/www/html/css/
+# Crea el directorio CGI y da permisos
+RUN mkdir -p /usr/lib/cgi-bin
+RUN chmod +x /usr/lib/cgi-bin
 
-# Copiar scripts CGI al directorio CGI
-COPY ./cgi-bin/ /usr/lib/cgi-bin/
-RUN chmod +x /usr/lib/cgi-bin/*
+# Copia los scripts Perl en el directorio CGI
+COPY cgi-bin/*.pl /usr/lib/cgi-bin/
+RUN chmod +x /usr/lib/cgi-bin/*.pl
 
-# Copiar archivo de configuración de Apache
-COPY ./config/000-default.conf /etc/apache2/sites-available/000-default.conf
+# Copia los archivos HTML, CSS, e imágenes
+COPY html/ /var/www/html/
+COPY css/ /var/www/html/css/
+COPY images/ /var/www/html/images/
+
+# Copia el archivo de configuración de Apache
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Exponer el puerto 80
 EXPOSE 80
