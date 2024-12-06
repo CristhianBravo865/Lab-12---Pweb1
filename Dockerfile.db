@@ -10,3 +10,5 @@ COPY /sql/init.sql /docker-entrypoint-initdb.d/
 
 # Exponer el puerto por defecto de MariaDB
 EXPOSE 3306
+
+#06/12/24 Si bien se construye un contenedor con maria db no se le instala sql por lo que los comandos ejecutados no funcionan correctamente

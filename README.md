@@ -26,4 +26,11 @@ docker run -d -p 8112:80 --name server-web server-web
 docker build -f .\Dockerfile.db -t biblioteca-db .
 docker run -d --name biblioteca-db -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=biblioteca -p 3306:3306 biblioteca-db
 
+Red:
+docker network create biblioteca-network
+docker network connect biblioteca-network server-web
+docker network connect biblioteca-network biblioteca-db
 
+Bash para ambos
+
+docker exec -it biblioteca-db /bin/bash
