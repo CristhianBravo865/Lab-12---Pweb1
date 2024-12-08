@@ -1,0 +1,8 @@
+Comando correr docker:
+docker run -d --name bibliotecadb  -e MARIADB_ROOT_PASSWORD=password  -p 3307:3306  mariadb:latest
+
+Comando acceder docker root:
+
+docker exec -it bibliotecadb mariadb -u root -p
+ 
+
