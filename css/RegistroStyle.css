@@ -103,3 +103,17 @@ body {
     background-color: #086444;
     color: #fff;
   }
+  .error-container {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    border: 1px solid #cc0000;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.input-label.error {
+    border: 1px solid #cc0000;
+    background-color: #ffe6e6;
+}
