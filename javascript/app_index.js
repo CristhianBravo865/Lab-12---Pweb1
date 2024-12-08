@@ -72,7 +72,7 @@ function verificarUsuario() {
 // Función para mostrar/ocultar el menú desplegable
 function toggleMenu() {
     var menu = document.getElementById('logout-menu');
-    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
 }
 
 // Función para cerrar sesión
