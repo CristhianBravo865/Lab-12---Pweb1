@@ -1,22 +1,26 @@
 # Usa una imagen base de Debian para instalar Apache, Perl y MariaDB
 FROM debian:latest
 
-# Instala Apache, Perl, MariaDB y módulos necesarios
+# Instala Apache, Perl, MariaDB, módulos necesarios y libjson-perl
 RUN apt-get update && \
     apt-get install -y apache2 libapache2-mod-perl2 perl mariadb-server \
-    libdbi-perl libdbd-mysql-perl && \
+    libdbi-perl libdbd-mysql-perl libjson-perl && \
     apt-get clean
 
 # Habilita el módulo CGI de Apache
 RUN a2enmod cgi
+
 # Crear directorio para HTML
 RUN mkdir -p /var/www/html
 
 # Dar permisos a la carpeta /var/www/html para poder copiar los archivos HTML, CSS, e imágenes
 RUN chmod -R 755 /var/www/html
+
 # Crea el directorio CGI y da permisos
 RUN mkdir -p /usr/lib/cgi-bin
 RUN chmod +x /usr/lib/cgi-bin
+
+# Copia los archivos Perl (.pl) a la carpeta CGI
 COPY cgi-bin/*.pl /usr/lib/cgi-bin/
 RUN chmod +x /usr/lib/cgi-bin/*.pl
 

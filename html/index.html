@@ -4,6 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Virtual</title>
+    <script>
+        // Función para cargar los libros usando AJAX
+        function cargarLibros() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/cgi-bin/recuperarlibros.pl', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var libros = JSON.parse(xhr.responseText);
+                    var container = document.getElementById('books-container');
+                    container.innerHTML = '';  // Limpiar los libros actuales
+
+                    libros.forEach(function(libro) {
+                        var div = document.createElement('div');
+                        div.classList.add('book-item');
+                        
+                        var titulo = document.createElement('h2');
+                        titulo.textContent = libro.titulo;
+                        div.appendChild(titulo);
+                        
+                        var autor = document.createElement('p');
+                        autor.textContent = 'Autor: ' + libro.autor;
+                        div.appendChild(autor);
+                        
+                        var precio = document.createElement('p');
+                        precio.textContent = 'Precio: $' + libro.precio;
+                        div.appendChild(precio);
+                        
+                        container.appendChild(div);
+                    });
+                }
+            };
+            xhr.send();
+        }
+
+        // Llamar a la función cargarLibros cuando la página se haya cargado
+        window.onload = function() {
+            cargarLibros();
+        };
+    </script>
 </head>
 <body>
     <!-- Header -->
@@ -33,22 +72,7 @@
     <main>
         <h1>Libros Disponibles</h1>
         <div id="books-container">
-            <!-- Ejemplo basico sin base de datos. Faltan Imagenes para cada libro-->
-            <div class="book-item">
-                <h2>Libro 1</h2>
-                <p>Autor: Autor 1</p>
-                <p>Precio: $10.00</p>
-            </div>
-            <div class="book-item">
-                <h2>Libro 2</h2>
-                <p>Autor: Autor 2</p>
-                <p>Precio: $15.00</p>
-            </div>
-            <div class="book-item">
-                <h2>Libro 3</h2>
-                <p>Autor: Autor 3</p>
-                <p>Precio: $20.00</p>
-            </div>
+            <!-- Los libros se cargarán aquí dinámicamente -->
         </div>
     </main>
 
