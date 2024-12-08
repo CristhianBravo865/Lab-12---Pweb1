@@ -32,34 +32,64 @@ h2 {
 }
 
 .book-card {
+    display: grid;
+    grid-template-rows: auto auto auto auto;
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
     text-align: center;
+    padding: 1rem;
     position: relative;
+    gap: 0.5rem; /* Ajuste para reducir espacio entre elementos */
 }
 
 .book-card img.book-image {
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin-bottom: 1rem;
+    align-self: center;
 }
 
-.book-card h2 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-}
-
-.book-card p {
-    font-size: 0.9rem;
-    margin: 0.5rem 0;
+.book-card h2.book-title {
+    font-size: 1rem;
+    margin: 0.5rem 0 0.3rem; /* Reduce espacio inferior */
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .book-card p.book-price {
     color: #28a745;
     font-weight: bold;
-    margin-top: 1rem;
+    margin: 0.3rem 0; /* Reduce espacio superior e inferior */
+    align-self: center;
+}
+
+.add-to-cart {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    height: 40px; /* Ajusta altura del botón */
+}
+
+.add-to-cart:hover {
+    background-color: #0056b3;
+}
+
+.cart-icon {
+    width: 18px;
+    height: 18px; 
+    object-fit: contain;
+    display: inline-block; 
+    vertical-align: middle; 
 }

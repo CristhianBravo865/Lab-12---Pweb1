@@ -28,12 +28,18 @@
 
                         var title = document.createElement('h2');
                         title.textContent = libro.nombre;
+                        title.classList.add('book-title');
                         card.appendChild(title);
 
                         var price = document.createElement('p');
                         price.textContent = 'Precio: S/ ' + libro.precio;
                         price.classList.add('book-price');
                         card.appendChild(price);
+
+                        var button = document.createElement('button');
+                        button.classList.add('add-to-cart');
+                        button.innerHTML = '<img src="/images/carrito-de-compras.png" alt="Carrito" class="cart-icon"> Añadir';
+                        card.appendChild(button);
 
                         container.appendChild(card);
                     });
