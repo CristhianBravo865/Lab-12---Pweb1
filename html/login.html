@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso</title>
+    <link rel="stylesheet" href="../css/LoginStyle.css"> <!-- Enlaza tu archivo CSS -->
+</head>
+<body>
+    <div class="form-content">
+        <h2>INGRESAR</h2>
+        <form id="form-login" action="cgi-bin/login.pl" method="post">
+            <div class="radio">
+                <!-- Puedes agregar opciones de radio si es necesario -->
+            </div>
+
+            <div class="input-field">
+                <input type="text" name="login_usuario" required>
+                <label id="nombreUsuario">Nombre de Usuario</label>
+            </div>
+            <div class="input-field">
+                <input type="password" name="password" required>
+                <label id="passwordUsuario">Contraseña</label>
+            </div>
+            <label id="errorLogin"></label>
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+
+        <div class="bottom-link">
+            ¿No tienes una cuenta?
+            <a href="registro.html" id="signup-link">Registrarse</a>
+            Olvidaste tu contraseña:
+            <a href="recuperarPassword.html" id="recuperar">Cambiar contraseña</a>
+        </div>
+    </div>
+</body>
+</html>
