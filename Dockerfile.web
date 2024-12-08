@@ -27,6 +27,7 @@ RUN chmod +x /usr/lib/cgi-bin/*.pl
 # Copia los archivos HTML, CSS, e imágenes
 COPY html/ /var/www/html/
 COPY css/ /var/www/html/css/
+COPY javascript/ /var/www/html/js/
 COPY images/ /var/www/html/images/
 
 # Copia el archivo de configuración de Apache
