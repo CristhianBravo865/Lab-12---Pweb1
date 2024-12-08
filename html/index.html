@@ -57,7 +57,31 @@
 <body>
     <!-- Header -->
     <header>
-        <h1>Biblioteca Virtual</h1>
+        <div id="header-container">
+            <!-- Logo -->
+            <div id="logo">
+                <img src="/images/logo.png" alt="Biblioteca Logo">
+            </div>
+
+            <!-- Barra de búsqueda -->
+            <div id="search-bar">
+                <form action="/search" method="get">
+                    <input type="text" name="query" placeholder="Buscar libros...">
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
+
+            <!-- Botón de registro -->
+            <div id="login-button">
+                <button onclick="window.location.href='/login'">Iniciar sesión</button>
+            </div>
+
+            <!-- Carrito de compras -->
+            <div id="cart-button" onclick="window.location.href='/cart'">
+                <img src="/images/carrito-de-compras.png" alt="Carrito de Compras">
+                <span>Carrito</span>
+            </div>
+        </div>
     </header>
 
     <!-- Main content -->
