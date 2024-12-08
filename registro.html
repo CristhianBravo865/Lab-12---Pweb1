@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Registro</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="RegistroStyle.css">
+    <link rel="icon" type="image/x-icon" href="img/logo.jpg">
+  </head>
+  <body>
+    <div class="perfil">
+      <div class="perfil-header">
+        <h1>Crear cuenta</h1>
+      </div>
+      
+            <form action="cgi-bin/registro.pl" class="datos_personales" method="post">
+                <div class="datos_personales">
+                    <h3>Datos personales</h3>
+                    <div class="input-group">
+                        <label>Nombre completo:</label>
+                        <input type="text" id="nombreC" name="nombreC" class="input-label" placeholder="" >
+                        <label id="error-registro-nombre" class="error" visible="true"></label>
+                    </div>
+                    <div class="input-group">
+                        <label>DNI:</label>
+                        <input type="text" id="dni" name="dni" class="input-label" placeholder="" >
+                        <label id="error-registro-dni" class="error" visible="false"></label>
+                    </div>
+                    <div class="input-group">
+                        <label>Número celular:</label>
+                        <input type="text" id="celular" name="celular" class="input-label" placeholder="" >
+                        <label id="error-registro-celular" class="error" visible="false"></label>
+                    </div>
+                    <div class="input-group">
+                        <label>Usuario de inicio de sesión</label>
+                        <input type="text" name="nameSesionUsuario" class="input-label" placeholder="">
+                        <label id="error-registro-user" class="error" visible="false"></label>
+                    </div>
+                    <div class="input-group">
+                        <label>Contraseña:</label>
+                        <input type="password" name="password" class="input-label" placeholder="">
+                        <label id="error-registro-password" class="error" visible="false"></label>
+                    </div>
+                    <div class="input-group">
+                        <label>Confirmar contraseña:</label>
+                        <input type="password" name="password2" class="input-label" placeholder="">
+                        <label id="error-registro-password1" class="error" visible="false"></label>
+                    </div>
+                </div>
+                  
+            </div>
+            <input type="button" value="Volver"  onclick="volverPerfil()"  class="inicio"/>
+            <input type="submit" value="Crear" class="inicio"/>     
+            
+            <script>
+                function volverPerfil(){
+                    window.location.href = "index.html";
+                }
+            </script>
+        </form>
+        
+      </div>
+    </div>
+    <script src="js/perfil.js"></script>
+  </body> 
+</html>
