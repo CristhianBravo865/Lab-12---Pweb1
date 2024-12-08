@@ -41,6 +41,13 @@ h2 {
     position: relative;
 }
 
+.book-card img.book-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
 .book-card h2 {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
@@ -51,14 +58,8 @@ h2 {
     margin: 0.5rem 0;
 }
 
-.nuevo-badge {
-    display: inline-block;
-    padding: 0.3rem 0.6rem;
-    background-color: #28a745;
-    color: white;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.book-card p.book-price {
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 1rem;
 }

@@ -20,22 +20,20 @@
                         var card = document.createElement('div');
                         card.classList.add('book-card');
 
+                        var image = document.createElement('img');
+                        image.src = '/images/' + libro.imagen;
+                        image.alt = libro.nombre;
+                        image.classList.add('book-image');
+                        card.appendChild(image);
+
                         var title = document.createElement('h2');
                         title.textContent = libro.nombre;
                         card.appendChild(title);
 
-                        var description = document.createElement('p');
-                        description.textContent = libro.descripcion;
-                        card.appendChild(description);
-
-                        var sucursal = document.createElement('p');
-                        sucursal.textContent = 'Sucursal: ' + libro.sucursal_id;
-                        card.appendChild(sucursal);
-
-                        var nuevo = document.createElement('span');
-                        nuevo.classList.add('nuevo-badge');
-                        nuevo.textContent = libro.nuevo == 1 ? 'Nuevo' : 'Usado';
-                        card.appendChild(nuevo);
+                        var price = document.createElement('p');
+                        price.textContent = 'Precio: S/ ' + libro.precio;
+                        price.classList.add('book-price');
+                        card.appendChild(price);
 
                         container.appendChild(card);
                     });
