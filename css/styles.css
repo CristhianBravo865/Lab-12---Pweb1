@@ -8,11 +8,12 @@ body {
 
 /* Header Fijo */
 header {
+    height: 50px;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #343a40;
+    background-color: #086444;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -47,7 +48,7 @@ header {
 }
 
 #search-bar input[type="text"] {
-    width: 100%;
+    width: 80%;
     padding: 0.5rem;
     border: none;
     border-radius: 5px;
@@ -55,31 +56,37 @@ header {
 
 #search-bar button {
     padding: 0.5rem 1rem;
-    margin-left: 0.5rem;
+    margin-left: 0.5rem;  /* Elimina o ajusta este margen */
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #b0146c;
     color: white;
     cursor: pointer;
 }
 
 #search-bar button:hover {
-    background-color: #0056b3;
+    background-color: #7b0f4c;
 }
 
 /* Botón de inicio sesion */
 #login-button button {
+    margin-left: 0.5rem;
     padding: 0.5rem 1rem;
-    border: none;
     border-radius: 5px;
-    background-color: #28a745;
-    color: white;
+    color: #ddd; 
+    background-color: #086444;
     cursor: pointer;
+    display: flex;
+    margin-right: 5rem;
+    border: 2px solid white; 
 }
 
 #login-button button:hover {
-    background-color: #218838;
+    color: rgb(138, 136, 136);
+    background-color: #065c33; 
+    border-color: #bbb; 
 }
+
 
 /* Carrito de compras */
 #cart-button {
@@ -90,12 +97,12 @@ header {
 
 #cart-button img {
     height: 30px;
-    margin-right: 0.5rem;
+    margin-right: 3rem;
 }
 
 /* Mainnn*/
 main {
-    padding: 6rem 2rem 2rem; /*Considerando el header fijo */
+    padding: 5rem 2rem 2rem; /*Considerando el header fijo */
 }
 
 h2 {
@@ -148,7 +155,7 @@ h2 {
 }
 
 .add-to-cart {
-    background-color: #007bff;
+    background-color: #ffa41c;
     color: white;
     border: none;
     border-radius: 5px;
@@ -163,11 +170,24 @@ h2 {
 }
 
 .add-to-cart:hover {
-    background-color: #0056b3;
+    background-color: #d28717;
 }
 
 .cart-icon {
     width: 18px;
     height: 18px;
     object-fit: contain;
+}
+
+footer{
+    height: 50px;
+    background-color: #086444;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    bottom: 0;
+    color: aliceblue;
+
 }
