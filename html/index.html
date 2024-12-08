@@ -19,17 +19,21 @@
                         var div = document.createElement('div');
                         div.classList.add('book-item');
                         
-                        var titulo = document.createElement('h2');
-                        titulo.textContent = libro.titulo;
-                        div.appendChild(titulo);
+                        var nombre = document.createElement('h2');
+                        nombre.textContent = libro.nombre;
+                        div.appendChild(nombre);
                         
-                        var autor = document.createElement('p');
-                        autor.textContent = 'Autor: ' + libro.autor;
-                        div.appendChild(autor);
-                        
-                        var precio = document.createElement('p');
-                        precio.textContent = 'Precio: $' + libro.precio;
-                        div.appendChild(precio);
+                        var descripcion = document.createElement('p');
+                        descripcion.textContent = 'Descripción: ' + libro.descripcion;
+                        div.appendChild(descripcion);
+
+                        var sucursal = document.createElement('p');
+                        sucursal.textContent = 'Sucursal ID: ' + libro.sucursal_id;
+                        div.appendChild(sucursal);
+
+                        var nuevo = document.createElement('p');
+                        nuevo.textContent = 'Nuevo: ' + (libro.nuevo == 1 ? 'Sí' : 'No');
+                        div.appendChild(nuevo);
                         
                         container.appendChild(div);
                     });
