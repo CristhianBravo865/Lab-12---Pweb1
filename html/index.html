@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Virtual</title>
+    <link rel="stylesheet" href="../css/styles.css">
     <script>
         // Función para cargar los libros usando AJAX
         function cargarLibros() {
@@ -13,29 +14,30 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var libros = JSON.parse(xhr.responseText);
                     var container = document.getElementById('books-container');
-                    container.innerHTML = '';  // Limpiar los libros actuales
+                    container.innerHTML = ''; // Limpiar los libros actuales
 
                     libros.forEach(function(libro) {
-                        var div = document.createElement('div');
-                        div.classList.add('book-item');
-                        
-                        var nombre = document.createElement('h2');
-                        nombre.textContent = libro.nombre;
-                        div.appendChild(nombre);
-                        
-                        var descripcion = document.createElement('p');
-                        descripcion.textContent = 'Descripción: ' + libro.descripcion;
-                        div.appendChild(descripcion);
+                        var card = document.createElement('div');
+                        card.classList.add('book-card');
+
+                        var title = document.createElement('h2');
+                        title.textContent = libro.nombre;
+                        card.appendChild(title);
+
+                        var description = document.createElement('p');
+                        description.textContent = libro.descripcion;
+                        card.appendChild(description);
 
                         var sucursal = document.createElement('p');
-                        sucursal.textContent = 'Sucursal ID: ' + libro.sucursal_id;
-                        div.appendChild(sucursal);
+                        sucursal.textContent = 'Sucursal: ' + libro.sucursal_id;
+                        card.appendChild(sucursal);
 
-                        var nuevo = document.createElement('p');
-                        nuevo.textContent = 'Nuevo: ' + (libro.nuevo == 1 ? 'Sí' : 'No');
-                        div.appendChild(nuevo);
-                        
-                        container.appendChild(div);
+                        var nuevo = document.createElement('span');
+                        nuevo.classList.add('nuevo-badge');
+                        nuevo.textContent = libro.nuevo == 1 ? 'Nuevo' : 'Usado';
+                        card.appendChild(nuevo);
+
+                        container.appendChild(card);
                     });
                 }
             };
@@ -51,39 +53,20 @@
 <body>
     <!-- Header -->
     <header>
-        <div id="header-container">
-            <!-- Logo -->
-            <div id="logo">
-                <img src="logo.png" alt="Biblioteca Logo" width="50">
-            </div>
-
-            <!-- Barra de búsqueda -->
-            <div id="search-bar">
-                <form action="/search" method="get">
-                    <input type="text" name="query" placeholder="Buscar libros...">
-                    <button type="submit">Buscar</button>
-                </form>
-            </div>
-
-            <!-- Botón de registro -->
-            <div id="register-button">
-                <button onclick="window.location.href='/register'">Registrarse</button>
-            </div>
-        </div>
+        <h1>Biblioteca Virtual</h1>
     </header>
 
     <!-- Main content -->
     <main>
-        <h1>Libros Disponibles</h1>
-        <div id="books-container">
+        <h2>Libros Disponibles</h2>
+        <div id="books-container" class="books-grid">
             <!-- Los libros se cargarán aquí dinámicamente -->
         </div>
     </main>
 
     <!-- Footer -->
     <footer>
-        <p>Cristhian Bravo</p>
-        <p>Mark Hancco</p>
+        <p>Cristhian Bravo | Mark Hancco</p>
     </footer>
 </body>
 </html>
