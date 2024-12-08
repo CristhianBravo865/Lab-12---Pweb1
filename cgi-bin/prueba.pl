@@ -3,11 +3,12 @@ use strict;
 use warnings;
 use DBI;
 
+
 # Configuración de conexión
 my $database = "biblioteca";
 my $hostname = "bibliotecadb";              
 my $port     = 3306;   
-my $username = "admin";  
+my $username = "root";  
 my $password = "password";   
 
 # DSN de conexión
