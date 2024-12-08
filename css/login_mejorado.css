@@ -1,0 +1,133 @@
+body {
+  background:url('http://cdn.wallpapersafari.com/13/6/Mpsg2b.jpg');
+  margin:0px;
+  font-family: 'Ubuntu', sans-serif;
+	background-size: 100% 110%;
+}
+h1, h2, h3, h4, h5, h6{
+  margin:0; padding:0;
+  font-size: 60px;
+}
+.login {
+  margin:0 auto;
+  max-width:500px;
+}
+form{
+  margin:0 auto;
+  max-width:700px;
+}
+.login-header {
+  color:#fff;
+  text-align:center;
+  font-size:300%;
+}
+/* .login-header h1 {
+   text-shadow: 0px 5px 15px #000; 
+*/
+form{
+  border:.5px solid #fff;
+  background:#4facff;
+  border-radius:10px;
+  box-shadow:0px 0px 10px #000;
+}
+label, p{
+  text-align:left;
+  font-family: 'Ubuntu', sans-serif;
+  color:#fff;
+  line-height:3em;
+  font-weight: bold;
+}
+p{
+  text-align:center;
+  font-size: 20px;
+}
+.login-form h3 {
+  text-align:left;
+  margin-left:40px;
+  color:#fff;
+}
+form{
+  box-sizing:border-box;
+  padding-top:15px;
+	padding-bottom:10%;
+  margin:5% auto;
+  text-align:center;
+}
+form input[type="text"],
+form input[type="password"],
+.login input[type="text"],
+.login input[type="password"]{
+  max-width:400px;
+	width: 80%;
+  line-height:3em;
+  font-family: 'Ubuntu', sans-serif;
+  margin:1em 2em;
+  border-radius:5px;
+  border:2px solid #f2f2f2;
+  outline:none;
+  padding-left:10px;
+}
+.input-label[type="text"],
+.input-label[type="password"]{
+  max-width:300px;
+  max-height: 20px;
+}
+.index,
+form input[type="button"] {
+  height:30px;
+  width:110px;
+  background:#fff;
+  border:1px solid #f2f2f2;
+  border-radius:20px;
+  color: slategrey;
+  font-family: 'Ubuntu', sans-serif;
+  cursor:pointer;
+  margin: 25px;
+  text-decoration: none;
+}
+.owner, .user {
+  margin-right: 20px;
+}
+
+.owner input, .user input {
+  display: none;
+}
+.radio {
+  display: flex;
+}
+.owner label, .user label {
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #f39a1f; 
+  color: #f39a1f; 
+  border-radius: 5px;
+}
+.owner input:checked + label, .user input:checked + label {
+  background-color: #f39a1f;
+  color: #fff;
+}
+
+.no-access {
+  color:#E86850;
+  margin:20px 0px 20px -57%;
+  text-decoration:underline;
+  cursor:pointer;
+}
+.try-again {
+  color:#f2f2f2;
+  text-decoration:underline;
+  cursor:pointer;
+}
+/*Media Querie*/
+@media only screen and (min-width : 150px) and (max-width : 530px){
+  .login-form h3 {
+    text-align:center;
+    margin:0;
+  }
+  .sign-up, .no-access {
+    margin:10px 0;
+  }
+  .login_button {
+    margin-bottom:10px;
+  }
+}
