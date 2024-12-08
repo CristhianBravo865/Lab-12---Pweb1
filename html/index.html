@@ -1,74 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Virtual</title>
     <link rel="stylesheet" href="../css/styles.css">
     <script>
-        // Función para cargar los libros usando AJAX
+        var libros = []; // Almacenar los libros
+
+        // Función para cargar los libros usando AJAX usa recuperarlibros.pl
         function cargarLibros() {
             var xhr = new XMLHttpRequest();
             xhr.open('GET', '/cgi-bin/recuperarlibros.pl', true);
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    var libros = JSON.parse(xhr.responseText);
-                    var container = document.getElementById('books-container');
-                    container.innerHTML = ''; // Limpiar los libros actuales
-
-                    libros.forEach(function(libro) {
-                        var card = document.createElement('div');
-                        card.classList.add('book-card');
-
-                        var image = document.createElement('img');
-                        image.src = '/images/' + libro.imagen;
-                        image.alt = libro.nombre;
-                        image.classList.add('book-image');
-                        card.appendChild(image);
-
-                        var title = document.createElement('h2');
-                        title.textContent = libro.nombre;
-                        title.classList.add('book-title');
-                        card.appendChild(title);
-
-                        var price = document.createElement('p');
-                        price.textContent = 'Precio: S/ ' + libro.precio;
-                        price.classList.add('book-price');
-                        card.appendChild(price);
-
-                        var button = document.createElement('button');
-                        button.classList.add('add-to-cart');
-                        button.innerHTML = '<img src="/images/carrito-de-compras.png" alt="Carrito" class="cart-icon"> Añadir';
-                        card.appendChild(button);
-
-                        container.appendChild(card);
-                    });
+                    libros = JSON.parse(xhr.responseText);
+                    mostrarLibros(libros);
                 }
             };
             xhr.send();
         }
 
+        // Función para mostrar los libros
+        function mostrarLibros(librosMostrar) {
+            var container = document.getElementById('books-container');
+            container.innerHTML = ''; // Limpiar los libros actuales
+
+            librosMostrar.forEach(function (libro) {
+                var card = document.createElement('div');
+                card.classList.add('book-card');
+
+                var image = document.createElement('img');
+                image.src = '/images/' + libro.imagen;
+                image.alt = libro.nombre;
+                image.classList.add('book-image');
+                card.appendChild(image);
+
+                var title = document.createElement('h2');
+                title.textContent = libro.nombre;
+                title.classList.add('book-title');
+                card.appendChild(title);
+
+                var price = document.createElement('p');
+                price.textContent = 'Precio: S/ ' + libro.precio;
+                price.classList.add('book-price');
+                card.appendChild(price);
+
+                var button = document.createElement('button');
+                button.classList.add('add-to-cart');
+                button.innerHTML = '<img src="/images/carrito-de-compras.png" alt="Carrito" class="cart-icon"> Añadir';
+                card.appendChild(button);
+
+                container.appendChild(card);
+            });
+        }
+
+        // Función para filtrar los libros por el nombre
+        function buscarLibros() {
+            var query = document.getElementById('search-input').value.toLowerCase();
+            var librosFiltrados = libros.filter(function (libro) {
+                return libro.nombre.toLowerCase().includes(query);
+            });
+            mostrarLibros(librosFiltrados);
+        }
+
         // Llamar a la función cargarLibros cuando la página se haya cargado
-        window.onload = function() {
+        window.onload = function () {
             cargarLibros();
         };
     </script>
 </head>
+
 <body>
     <!-- Header -->
     <header>
         <div id="header-container">
             <!-- Logo -->
-            <div id="logo">
+            <div id="logo" onclick="location.reload();">
                 <img src="/images/logo.png" alt="Biblioteca Logo">
             </div>
 
             <!-- Barra de búsqueda -->
             <div id="search-bar">
-                <form action="/search" method="get">
-                    <input type="text" name="query" placeholder="Buscar libros...">
-                    <button type="submit">Buscar</button>
-                </form>
+                <input type="text" id="search-input" placeholder="Buscar libros...">
+                <button onclick="buscarLibros()">Buscar</button>
             </div>
 
             <!-- Botón de registro -->
@@ -96,4 +112,5 @@
         <p>Cristhian Bravo | Mark Hancco</p>
     </footer>
 </body>
+
 </html>

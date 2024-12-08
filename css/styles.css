@@ -31,7 +31,6 @@ header {
     justify-content: space-between;
 }
 
-
 #logo img {
     height: 40px;
 }
@@ -87,7 +86,6 @@ header {
     border-color: #bbb; 
 }
 
-
 /* Carrito de compras */
 #cart-button {
     display: flex;
@@ -103,6 +101,7 @@ header {
 /* Mainnn*/
 main {
     padding: 5rem 2rem 2rem; /*Considerando el header fijo */
+    min-height:76vh;
 }
 
 h2 {
@@ -113,7 +112,7 @@ h2 {
 /* Grid libros */
 .books-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, 1fr); /* Cambié para que haya siempre 4 columnas */
     gap: 1.5rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -183,11 +182,10 @@ footer{
     height: 50px;
     background-color: #086444;
     padding: 10px 0;
-    position: fixed;
+    position: botom;
     width: 100%;
     text-align: center;
     font-family: Arial, sans-serif;
     bottom: 0;
     color: aliceblue;
-
 }
