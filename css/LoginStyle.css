@@ -89,3 +89,10 @@ button:hover {
 .bottom-link a:hover {
     text-decoration: underline;
 }
+#errorLogin {
+    color: red;
+    margin-top: 10px;
+    padding-top: 50px; 
+    font-size: 14px;
+}
+

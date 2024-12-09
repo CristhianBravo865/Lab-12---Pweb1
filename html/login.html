@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ingreso</title>
     <link rel="stylesheet" href="../css/LoginStyle.css"> <!-- Enlaza tu archivo CSS -->
+    <script src="../js/login.js" defer></script>
 </head>
 <body>
     <div class="form-content">
@@ -22,11 +23,8 @@
                 <input type="password" name="password" required>
                 <label id="passwordUsuario">Contraseña</label>
             </div>
-            <label id="errorLogin">
-                <% if ($cgi->param('error') == 1) { %>
-                    <p style="color: red;">Credenciales incorrectas. Intenta nuevamente.</p>
-                <% } %>
-            </label>
+
+            <label id="errorLogin"></label>
             <button type="submit">Iniciar Sesión</button>
         </form>
 

@@ -32,8 +32,10 @@ header {
 }
 
 #logo img {
-    height: 40px;
+    height: 100px; /* Cambia esto según sea necesario */
+    width: auto;   /* Mantiene la proporción */
 }
+
 
 /* Búsqueda */
 #search-bar {

@@ -48,13 +48,12 @@ HTML
 } else {
     # Usuario o contraseña incorrectos
     print <<HTML;
-        <html>
-        <body>
-            <script>
-                alert('Credenciales incorrectas');
-                window.location.href = '../login.html';
-            </script>
-        </body>
-        </html>
+    <html>
+    <body>
+        <script>
+            window.location.href = '../login.html?error=1';
+        </script>
+    </body>
+    </html>
 HTML
 }
