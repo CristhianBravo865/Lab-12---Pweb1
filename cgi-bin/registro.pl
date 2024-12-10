@@ -50,6 +50,26 @@ if (@errores) {
     exit;
 }
 
+# Verificar si el usuario ya existe
+my $sth_check = $dbh->prepare("SELECT COUNT(*) FROM usuario WHERE login_correo = ?");
+$sth_check->execute($usuario);
+my ($existe) = $sth_check->fetchrow_array;
+$sth_check->finish;
+
+if ($existe) {
+    print $cgi->header(-type => 'text/html', -charset => 'UTF-8');
+    print "<!DOCTYPE html>";
+    print "<html><head><title>Error de Registro</title>";
+    print "<link rel='stylesheet' href='../css/RegistroStyle.css'></head><body>";
+    print "<div class='perfil'>";
+    print "<div id='error-container' class='error-container'>";
+    print "<p>El correo ya está registrado. Por favor utiliza otro correo.</p>";
+    print "</div>";
+    print "<a href='../registro.html' class='inicio'>Volver al formulario</a>";
+    print "</div></body></html>";
+    exit;
+}
+
 # Insertar datos en la tabla usuario
 eval {
     my $sth = $dbh->prepare("INSERT INTO usuario (login_correo, login_clave, nombre, tarjeta_id) VALUES (?, ?, ?, NULL)");
