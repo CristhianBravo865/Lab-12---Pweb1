@@ -23,19 +23,20 @@
                 <h3>Datos personales</h3>
                 <div class="input-group">
                     <label>Nombre completo:</label>
-                    <input type="text" id="nombreC" name="nombreC" class="input-label" placeholder="">
+                    <input type="text" id="nombreC" name="nombreC" class="input-label" placeholder="Nombres completos">
                 </div>
                 <div class="input-group">
-                    <label>Usuario de inicio de sesión:</label>
-                    <input type="text" name="nameSesionUsuario" class="input-label" placeholder="">
+                    <label>Usuario de inicio de sesión (Correo):</label>
+                    <!-- Validación del correo utilizando type="email" -->
+                    <input type="email" name="nameSesionUsuario" class="input-label" placeholder="Correo electrónico" required>
                 </div>
                 <div class="input-group">
                     <label>Contraseña:</label>
-                    <input type="password" name="password" class="input-label" placeholder="">
+                    <input type="password" name="password" class="input-label" placeholder="Contraseña" required>
                 </div>
                 <div class="input-group">
                     <label>Confirmar contraseña:</label>
-                    <input type="password" name="password2" class="input-label" placeholder="">
+                    <input type="password" name="password2" class="input-label" placeholder="Repetir contraseña" required>
                 </div>
             </div>
 
