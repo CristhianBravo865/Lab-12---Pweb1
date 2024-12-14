@@ -4,7 +4,7 @@ use warnings;
 use CGI;
 use DBI;
 
-# Conexión a la base de datos
+# Configuración de conexión a la base de datos
 my $database = "usuarios_info";
 my $hostname = "bibliotecadb";
 my $port     = 3306;
@@ -26,18 +26,23 @@ print $cgi->header(-type => "text/html", -charset => "UTF-8");
 my $usuario = $cgi->param('login_usuario');
 my $password = $cgi->param('password');
 
-# Consultar a la base de datos
-my $query = "SELECT nombre FROM usuario WHERE login_correo = ? AND login_clave = ?";
+# Consultar a la base de datos para obtener nombre y tipo
+my $query = "SELECT nombre, tipo FROM usuario WHERE login_correo = ? AND login_clave = ?";
 my $sth = $dbh->prepare($query);
 $sth->execute($usuario, $password);
 
 if (my $row = $sth->fetchrow_hashref) {
-    # Usuario encontrado, redirigir con el nombre del usuario
+    # Usuario encontrado, guardar en localStorage y redirigir
     print <<HTML;
         <html>
         <head>
             <script>
+                // Guardar datos en localStorage
                 localStorage.setItem('nombre_usuario', '$row->{nombre}');
+                localStorage.setItem('login_correo', '$usuario');
+                localStorage.setItem('tipo_usuario', '$row->{tipo}');
+                
+                // Redirigir al inicio
                 window.location.href = '../index.html';
             </script>
         </head>
@@ -51,6 +56,7 @@ HTML
     <html>
     <body>
         <script>
+            alert('Usuario o contraseña incorrectos');
             window.location.href = '../login.html?error=1';
         </script>
     </body>
