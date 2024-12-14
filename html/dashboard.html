@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Libros</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Dashboard de Libros</h1>
+    <button class="button" onclick="showModal()">Agregar Libro</button>
+    <table id="libros-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Imagen</th>
+                <th>Precio</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Filas de libros se generarán aquí -->
+        </tbody>
+    </table>
+
+    <!-- Modal para agregar libro -->
+    <div id="modal">
+        <div id="modal-content">
+            <h2>Agregar Libro</h2>
+            <form action="/cgi-bin/agregarlibro.pl" method="post">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required><br>
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" name="descripcion" required><br>
+                <label for="imagen">Imagen:</label>
+                <input type="text" id="imagen" name="imagen" required><br>
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" step="0.01" required><br>
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" required><br>
+                <button type="submit" class="button">Guardar</button>
+                <button type="button" class="button" onclick="closeModal()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+    <script src="/js/scripts.js"></script>
+</body>
+</html>
