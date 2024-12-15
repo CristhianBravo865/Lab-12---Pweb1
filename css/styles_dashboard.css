@@ -5,6 +5,7 @@ body {
     background-color: #f4f4f9;
 }
 table {
+    margin-top: 80px;
     width: 100%;
     border-collapse: collapse;
 }
@@ -35,6 +36,7 @@ th {
 .button-container-right {
     float: right;
     position: absolute;
+    margin-bottom: 20 px;
     right: 0;
     top: 20px; 
 }
