@@ -3,7 +3,7 @@ CREATE TABLE inventario (
     inventario_id INT(12) AUTO_INCREMENT PRIMARY KEY,
     tienda_id INT(12) NOT NULL,
     libro_id INT(12) NOT NULL,
-    stock INT(12) NOT NULL,
+    stock INT(12) NULL,
     FOREIGN KEY (tienda_id) REFERENCES tienda(id),
     FOREIGN KEY (libro_id) REFERENCES libros(id)
 );

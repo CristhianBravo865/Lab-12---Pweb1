@@ -38,4 +38,35 @@ document.addEventListener("DOMContentLoaded", function () {
             tableBody.appendChild(row);
         });
     }
+    document.getElementById("agregar-inventario-form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Evita el envío normal del formulario
+        
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        fetch("/cgi-bin/agregarinventario.pl", {
+            method: "POST",
+            body: formData,
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Error al enviar el formulario");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                alert("Inventario agregado con éxito");
+                window.location.reload();
+            } else {
+                alert("Error al agregar inventario: " + data.error);
+            }
+        })
+        .catch((err) => {
+            console.error("Error al enviar formulario:", err);
+            alert("Hubo un problema al agregar el inventario. Inténtalo nuevamente más tarde.");
+        });
+    });
+    
+
 });

@@ -12,7 +12,7 @@
     <h1>Dashboard de Inventario</h1>
     <div>
         <div class="button-container-left">
-            <button class="button" onclick="showModal()">Agregar Libro</button>
+            <button class="button" onclick="showModal()">Agregar Inventario</button>
         </div>
         <div class="button-container-right">
             <button class="button" onclick="window.location.href = '/tablalibros.html'">Tabla Libros</button>
@@ -39,21 +39,17 @@
     <!-- Modal para agregar libro -->
     <div id="modal">
         <div id="modal-content">
-            <h2>Agregar Libro</h2>
-            <form id="agregar-libro-form" enctype="multipart/form-data">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required><br>
-                <label for="descripcion">Descripción:</label>
-                <input type="text" id="descripcion" name="descripcion" required><br>
-                <label for="precio">Precio:</label>
-                <input type="number" id="precio" name="precio" step="0.10" required><br>
-                <label for="imagen">Imagen:</label>
-                <input type="file" id="imagen" name="imagen" accept="image/*" required><br>
-                <button type="button" class="button" id="guardar-libro-btn">Guardar</button>
-                <button type="button" class="button" onclick="closeModal()">Cancelar</button>
+            <h2>Agregar Relación Inventario</h2>
+            <form id="agregar-inventario-form" enctype="multipart/form-data" method="POST">
+                <label for="store_id">ID Tienda:</label>
+                <input type="number" name="store_id" id="store_id" required>
+                <label for="book_id">ID Libro:</label>
+                <input type="number" name="book_id" id="book_id" required>
+                <button type="submit">Agregar</button>
             </form>
+            <button onclick="closeModal()">Cerrar</button>
         </div>
-    </div>
+    </div>    
 
     <script src="/js/dashjscripts.js"></script>
     <script src="/js/app_index.js"></script>
