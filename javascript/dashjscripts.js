@@ -3,9 +3,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.querySelector("#libros-table tbody");
 
     // Verificar si el usuario tiene permiso
-    const tipoUsuario = localStorage.getItem("tipo_usuario");
-    if (tipoUsuario !== "propietario") {
-        alert("Acceso denegado. Solo los propietarios pueden acceder.");
+    const tipoUsuario = getCookie("tipo_usuario");
+    
+    if (!tipoUsuario || tipoUsuario !== "propietario") {
+        alert("Acceso denegado. Debes iniciar sesión como propietario.");
+        window.location.href = "/login.html";
+        return;
+    }
+
+    // Verificar al cargar para asegurar que el usuario esté registrado
+    if (!getCookie("tipo_usuario")) {
+        alert("Sesión inválida. Debes iniciar sesión nuevamente.");
         window.location.href = "/login.html";
     }
 

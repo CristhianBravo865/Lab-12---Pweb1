@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use CGI;
 use DBI;
+use CGI::Cookie;
 
 # Configuración de conexión a la base de datos
 my $database = "usuarios_info";
@@ -20,7 +21,6 @@ my $dbh = DBI->connect($dsn, $username, $password_db, {
 
 # Inicializar CGI
 my $cgi = CGI->new;
-print $cgi->header(-type => "text/html", -charset => "UTF-8");
 
 # Obtener los datos del formulario
 my $usuario = $cgi->param('login_usuario');
@@ -32,16 +32,17 @@ my $sth = $dbh->prepare($query);
 $sth->execute($usuario, $password);
 
 if (my $row = $sth->fetchrow_hashref) {
-    # Usuario encontrado, guardar en localStorage y redirigir
+    # Usuario encontrado, crear cookies
+    my $cookie_nombre_usuario = CGI::Cookie->new(-name => 'nombre_usuario', -value => $row->{nombre}, -expires => '+1h');
+    my $cookie_login_correo = CGI::Cookie->new(-name => 'login_correo', -value => $usuario, -expires => '+1h');
+    my $cookie_tipo_usuario = CGI::Cookie->new(-name => 'tipo_usuario', -value => $row->{tipo}, -expires => '+1h');
+
+    # Guardar cookies y redirigir
+    print $cgi->header(-type => 'text/html', -cookie => [$cookie_nombre_usuario, $cookie_login_correo, $cookie_tipo_usuario]);
     print <<HTML;
         <html>
         <head>
             <script>
-                // Guardar datos en localStorage
-                localStorage.setItem('nombre_usuario', '$row->{nombre}');
-                localStorage.setItem('login_correo', '$usuario');
-                localStorage.setItem('tipo_usuario', '$row->{tipo}');
-                
                 // Redirigir al inicio
                 window.location.href = '../index.html';
             </script>
@@ -52,6 +53,7 @@ if (my $row = $sth->fetchrow_hashref) {
 HTML
 } else {
     # Usuario o contraseña incorrectos
+    print $cgi->header(-type => 'text/html');
     print <<HTML;
     <html>
     <body>

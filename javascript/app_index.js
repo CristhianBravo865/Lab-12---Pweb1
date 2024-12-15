@@ -1,6 +1,6 @@
 var libros = []; // Almacenar los libros
 
-// Función para cargar los libros usando AJAX usa recuperarlibros.pl
+// Función para cargar los libros usando AJAX desde recuperarlibros.pl
 function cargarLibros() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/cgi-bin/recuperarlibros.pl', true);
@@ -58,11 +58,11 @@ function buscarLibros() {
 
 // Función para verificar si el usuario está logueado
 function verificarUsuario() {
-    var nombreUsuario = localStorage.getItem('nombre_usuario'); // Suponiendo que guardas el nombre del usuario en localStorage
+    var nombreUsuario = getCookie('nombre_usuario'); // Recuperar nombre del usuario de la cookie
     var loginButton = document.getElementById('login-button');
 
     if (nombreUsuario) {
-        loginButton.innerHTML = '<button id="user-button" onclick="toggleMenu()">' + nombreUsuario + '</button>';
+        loginButton.innerHTML = '<button id="user-button" onclick="toggleMenu()">' + decodeURIComponent(nombreUsuario) + '</button>'; // Decodificar el nombre de la cookie
         document.getElementById('logout-menu').style.display = 'none'; // Iniciar con el menú oculto
     } else {
         loginButton.innerHTML = '<button onclick="window.location.href=\'../login.html\'">Login</button>';
@@ -75,14 +75,37 @@ function toggleMenu() {
     menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'block' : 'none';
 }
 
-// Función para cerrar sesión
-function cerrarSesion() {
-    localStorage.removeItem('nombre_usuario');
-    localStorage.removeItem('correo_usuario'); // Eliminar el correo
-    localStorage.removeItem('tipo_usuario');   // Eliminar el tipo de cuenta
-    window.location.href = '../index.html'; // Redirigir al inicio
+// Función para obtener una cookie por nombre
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length)); // Decodificar el valor de la cookie
+    }
+    return null;
 }
 
+// Función para crear o actualizar una cookie
+function setCookie(name, value, hours) {
+    var expires = "";
+    if (hours) {
+        var date = new Date();
+        date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Función para cerrar sesión
+function cerrarSesion() {
+    // Eliminar cookies de sesión
+    setCookie('nombre_usuario', '', -1);
+    setCookie('login_correo', '', -1);
+    setCookie('tipo_usuario', '', -1);
+    window.location.href = '../index.html'; // Redirigir al inicio
+}
 
 // Llamar a la función cargarLibros cuando la página se haya cargado
 window.onload = function () {
