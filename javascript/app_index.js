@@ -78,8 +78,11 @@ function toggleMenu() {
 // Función para cerrar sesión
 function cerrarSesion() {
     localStorage.removeItem('nombre_usuario');
+    localStorage.removeItem('correo_usuario'); // Eliminar el correo
+    localStorage.removeItem('tipo_usuario');   // Eliminar el tipo de cuenta
     window.location.href = '../index.html'; // Redirigir al inicio
 }
+
 
 // Llamar a la función cargarLibros cuando la página se haya cargado
 window.onload = function () {
