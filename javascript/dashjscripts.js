@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Verificar si el usuario tiene permiso
     const tipoUsuario = getCookie("tipo_usuario");
-    
+
     if (!tipoUsuario || tipoUsuario !== "propietario") {
         alert("Acceso denegado. Debes iniciar sesión como propietario.");
         window.location.href = "/login.html";
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Verificar al cargar para asegurar que el usuario esté registrado
-    if (!getCookie("tipo_usuario")) {
+    if (!getCookie("nombre_usuario")) {
         alert("Sesión inválida. Debes iniciar sesión nuevamente.");
         window.location.href = "/login.html";
     }
@@ -23,7 +23,12 @@ document.addEventListener("DOMContentLoaded", function () {
             "Tipo-Usuario": tipoUsuario,
         },
     })
-        .then((response) => response.json())
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Error al cargar los datos del servidor");
+            }
+            return response.json();
+        })
         .then((data) => {
             if (data.error) {
                 alert(data.error);
@@ -32,10 +37,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 renderTable(data);
             }
         })
-        .catch((err) => console.error("Error al cargar libros:", err));
+        .catch((err) => {
+            console.error("Error al cargar libros:", err);
+            alert("Hubo un problema al cargar los libros. Inténtalo nuevamente más tarde.");
+        });
 
     // Renderizar los libros en la tabla
     function renderTable(libros) {
+        if (libros.length === 0) {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td colspan="5">No hay libros disponibles</td>`;
+            tableBody.appendChild(row);
+            return;
+        }
+
         libros.forEach((libro) => {
             const row = document.createElement("tr");
             row.innerHTML = `
@@ -68,7 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "POST",
             body: formData,
         })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Error al enviar el formulario");
+                }
+                return response.json();
+            })
             .then((data) => {
                 if (data.success) {
                     alert("Libro agregado con éxito");
@@ -77,6 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert("Error al agregar libro: " + data.error);
                 }
             })
-            .catch((err) => console.error("Error al enviar formulario:", err));
+            .catch((err) => {
+                console.error("Error al enviar formulario:", err);
+                alert("Hubo un problema al agregar el libro. Inténtalo nuevamente más tarde.");
+            });
     });
 });
