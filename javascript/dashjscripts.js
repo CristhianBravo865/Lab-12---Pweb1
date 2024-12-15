@@ -61,9 +61,71 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${libro.descripcion}</td>
                 <td><img src="/images/${libro.imagen}" alt="${libro.nombre}" width="50"></td>
                 <td>${libro.precio}</td>
-                <td>${libro.stock}</td>
+                <td class="editable-stock" data-inventario-id="${libro.inventario_id}">${libro.stock}</td>
             `;
             tableBody.appendChild(row);
+        });
+
+        addEditableStockListeners();
+    }
+
+    // Agregar listeners para editar el stock
+    function addEditableStockListeners() {
+        const stockCells = document.querySelectorAll(".editable-stock");
+        stockCells.forEach((cell) => {
+            cell.addEventListener("click", function () {
+                const currentValue = cell.textContent;
+                const input = document.createElement("input");
+                input.type = "number";
+                input.value = currentValue;
+                cell.textContent = ""; // Limpiar celda
+                cell.appendChild(input);
+                input.focus();
+
+                // Guardar el valor al presionar Enter
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        const newValue = input.value;
+                        const inventarioId = cell.getAttribute("data-inventario-id");
+
+                        // Enviar actualización al servidor
+                        fetch("/cgi-bin/actualizar_stock.pl", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                inventario_id: inventarioId,
+                                stock: newValue,
+                            }),
+                        })
+                            .then((response) => {
+                                if (!response.ok) {
+                                    throw new Error("Error al actualizar el stock");
+                                }
+                                return response.json();
+                            })
+                            .then((data) => {
+                                if (data.success) {
+                                    cell.textContent = newValue; // Actualizar valor en la tabla
+                                } else {
+                                    alert("Error al actualizar stock: " + data.error);
+                                    cell.textContent = currentValue; // Restaurar valor anterior
+                                }
+                            })
+                            .catch((err) => {
+                                console.error("Error al actualizar stock:", err);
+                                alert("Hubo un problema al actualizar el stock.");
+                                cell.textContent = currentValue; // Restaurar valor anterior
+                            });
+                    }
+                });
+
+                // Restaurar valor si se pierde el foco
+                input.addEventListener("blur", function () {
+                    cell.textContent = currentValue;
+                });
+            });
         });
     }
 
