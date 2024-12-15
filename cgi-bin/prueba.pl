@@ -24,15 +24,5 @@ my $cgi = CGI->new;
 # Si la conexión es exitosa, muestra el tipo de contenido
 print "Content-type: text/html\n\n";  
 
-# Aquí puedes realizar las consultas o manipulaciones de la base de datos, por ejemplo:
-# my $sth = $dbh->prepare("SELECT * FROM tabla");
-# $sth->execute();
-
-# Si realizas una consulta o algún procesamiento, asegúrate de manejar errores si algo falla.
-# Si necesitas mostrar resultados, por ejemplo:
-# while (my $row = $sth->fetchrow_hashref) {
-#     print "$row->{columna}\n";
-# }
-
 # Cerrar la conexión correctamente
 $dbh->disconnect();

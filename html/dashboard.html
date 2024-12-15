@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Libros</title>
     <link rel="stylesheet" href="/css/styles_dashboard.css">
 </head>
+
 <body>
     <h1>Dashboard de Libros</h1>
     <button class="button" onclick="showModal()">Agregar Libro</button>
@@ -34,7 +36,7 @@
                 <label for="descripcion">Descripción:</label>
                 <input type="text" id="descripcion" name="descripcion" required><br>
                 <label for="imagen">Imagen:</label>
-                <input type="text" id="imagen" name="imagen" required><br>
+                <input type="file" id="imagen" name="imagen" accept="image/*" required><br>
                 <label for="precio">Precio:</label>
                 <input type="number" id="precio" name="precio" step="0.01" required><br>
                 <label for="stock">Stock:</label>
@@ -48,4 +50,5 @@
     <script src="/js/dashjscripts.js"></script>
     <script src="/js/app_index.js"></script>
 </body>
+
 </html>

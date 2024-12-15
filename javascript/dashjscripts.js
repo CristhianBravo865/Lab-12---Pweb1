@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("guardar-libro-btn").addEventListener("click", function () {
         const form = document.getElementById("agregar-libro-form");
         const formData = new FormData(form);
-
+    
         fetch("/cgi-bin/agregarlibro.pl", {
             method: "POST",
             body: formData,
@@ -101,5 +101,5 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("Error al enviar formulario:", err);
                 alert("Hubo un problema al agregar el libro. Inténtalo nuevamente más tarde.");
             });
-    });
+    });    
 });

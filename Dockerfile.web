@@ -29,7 +29,8 @@ COPY html/ /var/www/html/
 COPY css/ /var/www/html/css/
 COPY javascript/ /var/www/html/js/
 COPY images/ /var/www/html/images/
-
+#Permisos para imagen
+RUN chmod 755 /var/www/html/images
 # Copia el archivo de configuración de Apache
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 
