@@ -9,8 +9,16 @@
 </head>
 
 <body>
-    <h1>Dashboard de Libros</h1>
-    <button class="button" onclick="showModal()">Agregar Libro</button>
+    <h1>Dashboard de Inventario</h1>
+    <div>
+        <div class="button-container-left">
+            <button class="button" onclick="showModal()">Agregar Libro</button>
+        </div>
+        <div class="button-container-right">
+            <button class="button" onclick="window.location.href = '/tablalibros.html'">Tabla Libros</button>
+            <button class="button" onclick="window.location.href = '/tablatiendas.html'">Tabla Tiendas</button>
+        </div>
+    </div>
     <table id="libros-table">
         <thead>
             <tr>

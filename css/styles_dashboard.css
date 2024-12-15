@@ -1,4 +1,4 @@
-body {
+body { 
     font-family: Arial, sans-serif;
     margin: 20px;
     padding: 0;
@@ -22,10 +22,33 @@ th {
     padding: 10px;
     border: none;
     cursor: pointer;
+    margin-left: 5px; 
 }
 .button:hover {
     background-color: #540e35;
 }
+
+.button-container-left {
+    float: left;
+}
+
+.button-container-right {
+    float: right;
+    position: absolute;
+    right: 0;
+    top: 20px; 
+}
+
+.button-container-left .button {
+    margin-left: 0;
+}
+
+.button-container-right .button {
+    background-color: #086444; 
+    margin-top: 60px;
+    margin-right: 10px; 
+}
+
 #modal {
     display: none;
     position: fixed;
