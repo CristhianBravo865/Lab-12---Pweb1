@@ -30,8 +30,11 @@ if ($tipo_usuario ne 'propietario') {
     exit;
 }
 
-# Consultar los libros en la base de datos
-my $sth = $dbh->prepare("SELECT id, nombre, descripcion, imagen, precio, stock FROM libros");
+# Consultar los libros y sus tiendas en la base de datos
+my $sth = $dbh->prepare("SELECT inventario.inventario_id, tienda.id AS tienda_id, tienda.nombre AS tienda_nombre, libros.id AS libro_id, libros.nombre, libros.descripcion, libros.imagen, libros.precio, inventario.stock 
+                         FROM inventario
+                         JOIN tienda ON inventario.tienda_id = tienda.id
+                         JOIN libros ON inventario.libro_id = libros.id");
 $sth->execute();
 
 # Convertir los resultados a JSON

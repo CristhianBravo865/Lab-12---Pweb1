@@ -50,10 +50,12 @@ document.addEventListener("DOMContentLoaded", function () {
             tableBody.appendChild(row);
             return;
         }
-
+    
         libros.forEach((libro) => {
             const row = document.createElement("tr");
             row.innerHTML = `
+                <td>${libro.tienda_id}</td>
+                <td>${libro.tienda_nombre}</td>
                 <td>${libro.nombre}</td>
                 <td>${libro.descripcion}</td>
                 <td><img src="/images/${libro.imagen}" alt="${libro.nombre}" width="50"></td>
@@ -63,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
             tableBody.appendChild(row);
         });
     }
+    
 
     // Mostrar modal
     window.showModal = function () {
