@@ -56,7 +56,6 @@ function buscarLibros() {
     mostrarLibros(librosFiltrados);
 }
 
-// Función para verificar si el usuario está logueado
 function verificarUsuario() {
     var nombreUsuario = getCookie('nombre_usuario'); // Recuperar nombre del usuario de la cookie
     var loginButton = document.getElementById('login-button');
@@ -66,33 +65,37 @@ function verificarUsuario() {
 
         // Verificar si el tipo de usuario es "propietario"
         var tipoUsuario = getCookie('tipo_usuario');
+        var menu = document.getElementById('logout-menu');
+        
         if (tipoUsuario === 'propietario') {
-            var menu = document.getElementById('logout-menu');
-            //DASHBOARD
+            // DASHBOARD
             var dashboardOption = document.createElement('button');
             dashboardOption.textContent = 'Dashboard';
             dashboardOption.onclick = function () { window.location.href = '/dashboard.html'; };
             dashboardOption.classList.add('dashboard-button');
             menu.appendChild(dashboardOption);
 
-
+            var logoutOption = document.createElement('button');
+            logoutOption.id = 'logout-button';
+            logoutOption.textContent = 'Cerrar sesión';
+            logoutOption.onclick = cerrarSesion;
+            logoutOption.classList.add('logout-button');
+            menu.appendChild(logoutOption);
+        } else if (tipoUsuario === 'usuario') { // OPCIONES PARA USUARIO NORMAL
+            var logoutOption = document.createElement('button');
+            logoutOption.id = 'logout-button';
+            logoutOption.textContent = 'Cerrar sesión';
+            logoutOption.onclick = cerrarSesion;
+            logoutOption.classList.add('logout-button');
+            menu.appendChild(logoutOption);
         }
-        else {//OPCIONES PARA USUARIO NORMAL
-
-        }
-        // Cerrar sesión
-        var logoutOption = document.createElement('button');
-        logoutOption.id = 'logout-button';
-        logoutOption.textContent = 'Cerrar sesión';
-        logoutOption.onclick = cerrarSesion;
-        logoutOption.classList.add('logout-button');
-        menu.appendChild(logoutOption);
 
         document.getElementById('logout-menu').style.display = 'none'; // Iniciar con el menú oculto
     } else {
         loginButton.innerHTML = '<button onclick="window.location.href=\'../login.html\'">Login</button>';
     }
 }
+
 
 
 
