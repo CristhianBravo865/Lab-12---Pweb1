@@ -1,11 +1,20 @@
+function showModal() {
+    var modal = document.getElementById('modal');
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    var modal = document.getElementById('modal');
+    modal.style.display = "none";
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     try {
         // Validar sesión como propietario
         validarSesion("propietario");
 
-        const tableBody = document.querySelector("#libros-table tbody");
-
         // Cargar libros desde el servidor
+        const tableBody = document.querySelector("#libros-table tbody");
         fetch("/cgi-bin/tablalibros.pl")
             .then((response) => {
                 if (!response.ok) {
@@ -40,36 +49,45 @@ document.addEventListener("DOMContentLoaded", function () {
                 tableBody.appendChild(row);
             });
         }
+        // Mostrar modal
+        window.showModal = function () {
+            var modal = document.getElementById('modal');
+            modal.style.display = "block";
+        };
 
-        // Manejar envío del formulario
-        document.getElementById("agregar-inventario-form").addEventListener("submit", function (event) {
-            event.preventDefault(); // Evita el envío normal del formulario
-            
-            const form = event.target;
+        // Cerrar modal
+        window.closeModal = function () {
+            var modal = document.getElementById('modal');
+            modal.style.display = "none";
+        };
+
+        // Agregar libro
+        document.getElementById("guardar-libro-btn").addEventListener("click", function () {
+            const form = document.getElementById("agregar-libro-form");
             const formData = new FormData(form);
-            
-            fetch("/cgi-bin/agregarinventario.pl", {
+
+            fetch("/cgi-bin/agregarlibro.pl", {
                 method: "POST",
                 body: formData,
             })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Error al enviar el formulario");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (data.success) {
-                    alert("Inventario agregado con éxito");
-                    window.location.reload();
-                } else {
-                    alert("Error al agregar inventario: " + data.error);
-                }
-            })
-            .catch((err) => {
-                console.error("Error al enviar formulario:", err);
-                alert("Hubo un problema al agregar el inventario. Inténtalo nuevamente más tarde.");
-            });
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Error al enviar el formulario");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.success) {
+                        alert("Libro agregado con éxito");
+                        window.location.reload();
+                    } else {
+                        alert("Error al agregar libro: " + data.error);
+                    }
+                })
+                .catch((err) => {
+                    console.error("Error al enviar formulario:", err);
+                    alert("Hubo un problema al agregar el libro. Inténtalo nuevamente más tarde.");
+                });
         });
     } catch (error) {
         console.error(error.message);
