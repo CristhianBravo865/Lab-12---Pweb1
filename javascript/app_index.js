@@ -63,11 +63,38 @@ function verificarUsuario() {
 
     if (nombreUsuario) {
         loginButton.innerHTML = '<button id="user-button" onclick="toggleMenu()">' + decodeURIComponent(nombreUsuario) + '</button>'; // Decodificar el nombre de la cookie
+
+        // Verificar si el tipo de usuario es "propietario"
+        var tipoUsuario = getCookie('tipo_usuario');
+        if (tipoUsuario === 'propietario') {
+            var menu = document.getElementById('logout-menu');
+            //DASHBOARD
+            var dashboardOption = document.createElement('button');
+            dashboardOption.textContent = 'Dashboard';
+            dashboardOption.onclick = function () { window.location.href = '/dashboard.html'; };
+            dashboardOption.classList.add('dashboard-button');
+            menu.appendChild(dashboardOption);
+
+
+        }
+        else {//OPCIONES PARA USUARIO NORMAL
+
+        }
+        // Cerrar sesión
+        var logoutOption = document.createElement('button');
+        logoutOption.id = 'logout-button';
+        logoutOption.textContent = 'Cerrar sesión';
+        logoutOption.onclick = cerrarSesion;
+        logoutOption.classList.add('logout-button');
+        menu.appendChild(logoutOption);
+
         document.getElementById('logout-menu').style.display = 'none'; // Iniciar con el menú oculto
     } else {
         loginButton.innerHTML = '<button onclick="window.location.href=\'../login.html\'">Login</button>';
     }
 }
+
+
 
 // Función para mostrar/ocultar el menú desplegable
 function toggleMenu() {
