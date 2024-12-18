@@ -71,7 +71,7 @@
         <tbody></tbody>
     </table>
 
-    <!-- Formulario para editar datos -->
+    <!-- Formulario para editar datos del usuario y tarjeta -->
     <form id="editar-usuario" class="hidden">
         <input type="hidden" name="id" id="id">
         <label for="correo">Correo:</label>
@@ -81,7 +81,21 @@
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" id="nombre" required>
         <label for="tarjeta_id">Tarjeta ID:</label>
-        <input type="text" name="tarjeta_id" id="tarjeta_id">
+        <input type="text" name="tarjeta_id" id="tarjeta_id" readonly>
+        <!-- Datos de la tarjeta -->
+        <h3>Información de la Tarjeta</h3>
+        <label for="numero_tarjeta">Número de Tarjeta:</label>
+        <input type="text" name="numero_tarjeta" id="numero_tarjeta">
+        <label for="tipo_tarjeta">Tipo de Tarjeta:</label>
+        <select name="tipo_tarjeta" id="tipo_tarjeta">
+            <option value="Crédito">Crédito</option>
+            <option value="Débito">Débito</option>
+        </select>
+        <label for="fecha_expiracion">Fecha de Expiración:</label>
+        <input type="date" name="fecha_expiracion" id="fecha_expiracion">
+        <label for="cvv">CVV:</label>
+        <input type="text" name="cvv" id="cvv">
+        
         <button type="button" id="guardar">Guardar Cambios</button>
     </form>
 
@@ -121,7 +135,9 @@
                             <tr><td>Clave</td><td>********</td></tr>
                             <tr><td>Nombre</td><td>${datos.nombre}</td></tr>
                             <tr><td>Tarjeta ID</td><td>${datos.tarjeta_id || "No registrada"}</td></tr>
-                            <tr><td>Tipo</td><td>${datos.tipo}</td></tr>
+                            <tr><td>Número de Tarjeta</td><td>${datos.numero_tarjeta || "No disponible"}</td></tr>
+                            <tr><td>Tipo de Tarjeta</td><td>${datos.tipo_tarjeta || "No disponible"}</td></tr>
+                            <tr><td>Fecha de Expiración</td><td>${datos.fecha_expiracion || "No disponible"}</td></tr>
                         `;
 
                         // Rellenar formulario para edición
@@ -130,6 +146,10 @@
                         document.querySelector("#clave").value = datos.login_clave;
                         document.querySelector("#nombre").value = datos.nombre;
                         document.querySelector("#tarjeta_id").value = datos.tarjeta_id || "";
+                        document.querySelector("#numero_tarjeta").value = datos.numero_tarjeta || "";
+                        document.querySelector("#tipo_tarjeta").value = datos.tipo_tarjeta || "";
+                        document.querySelector("#fecha_expiracion").value = datos.fecha_expiracion || "";
+                        document.querySelector("#cvv").value = datos.cvv || "";
                         document.querySelector("#editar-usuario").classList.remove("hidden");
                     } else {
                         alert("No se pudo cargar la información del usuario.");
@@ -148,7 +168,11 @@
                     correo: document.querySelector("#correo").value,
                     clave: document.querySelector("#clave").value,
                     nombre: document.querySelector("#nombre").value,
-                    tarjeta_id: document.querySelector("#tarjeta_id").value
+                    tarjeta_id: document.querySelector("#tarjeta_id").value,
+                    numero_tarjeta: document.querySelector("#numero_tarjeta").value,
+                    tipo_tarjeta: document.querySelector("#tipo_tarjeta").value,
+                    fecha_expiracion: document.querySelector("#fecha_expiracion").value,
+                    cvv: document.querySelector("#cvv").value
                 };
 
                 const response = await fetch("/cgi-bin/editar_usuario.pl", {
