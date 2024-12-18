@@ -30,7 +30,7 @@ docker run -d --name biblioteca-db -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATA
 Red:
 docker network create biblioteca-network
 docker network connect biblioteca-network server-web
-docker network connect biblioteca-network biblioteca-db
+docker network connect biblioteca-network bibliotecadb
 
 Bash para ambos
 
