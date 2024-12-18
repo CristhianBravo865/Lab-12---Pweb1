@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        form {
+            max-width: 500px;
+        }
+
+        form input,
+        form select,
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #mensaje {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Perfil de Usuario</h1>
+
+    <!-- Tabla para mostrar los datos -->
+    <table id="datos-usuario">
+        <thead>
+            <tr>
+                <th>Dato</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- Formulario para editar datos -->
+    <form id="editar-usuario" class="hidden">
+        <input type="hidden" name="id" id="id">
+        <label for="correo">Correo:</label>
+        <input type="email" name="correo" id="correo" required>
+        <label for="clave">Clave:</label>
+        <input type="password" name="clave" id="clave" required>
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" required>
+        <label for="tarjeta_id">Tarjeta ID:</label>
+        <input type="text" name="tarjeta_id" id="tarjeta_id">
+        <button type="button" id="guardar">Guardar Cambios</button>
+    </form>
+
+    <p id="mensaje" class="hidden">¡Datos actualizados con éxito!</p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Leer y decodificar la cookie "login_correo"
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+
+            // Decodificar el valor de la cookie
+            const loginCorreo = decodeURIComponent(getCookie("login_correo"));
+            if (!loginCorreo) {
+                alert("No se encontró la sesión del usuario.");
+                return;
+            }
+
+            // Mostrar datos del usuario
+            const cargarDatos = async () => {
+                try {
+                    const response = await fetch(`/cgi-bin/mostrar_usuario.pl?login_correo=${loginCorreo}`);
+                    if (response.ok) {
+                        const datos = await response.json();
+                        if (datos.error) {
+                            alert(datos.error); // Mostrar mensaje de error del servidor
+                            return;
+                        }
+                        const tbody = document.querySelector("#datos-usuario tbody");
+                        tbody.innerHTML = `
+                            <tr><td>ID</td><td>${datos.id}</td></tr>
+                            <tr><td>Correo</td><td>${datos.login_correo}</td></tr>
+                            <tr><td>Clave</td><td>********</td></tr>
+                            <tr><td>Nombre</td><td>${datos.nombre}</td></tr>
+                            <tr><td>Tarjeta ID</td><td>${datos.tarjeta_id || "No registrada"}</td></tr>
+                            <tr><td>Tipo</td><td>${datos.tipo}</td></tr>
+                        `;
+
+                        // Rellenar formulario para edición
+                        document.querySelector("#id").value = datos.id;
+                        document.querySelector("#correo").value = datos.login_correo;
+                        document.querySelector("#clave").value = datos.login_clave;
+                        document.querySelector("#nombre").value = datos.nombre;
+                        document.querySelector("#tarjeta_id").value = datos.tarjeta_id || "";
+                        document.querySelector("#editar-usuario").classList.remove("hidden");
+                    } else {
+                        alert("No se pudo cargar la información del usuario.");
+                    }
+                } catch (error) {
+                    console.error("Error al cargar datos del usuario:", error);
+                }
+            };
+
+            cargarDatos();
+
+            // Enviar cambios
+            document.querySelector("#guardar").addEventListener("click", async () => {
+                const datos = {
+                    id: document.querySelector("#id").value,
+                    correo: document.querySelector("#correo").value,
+                    clave: document.querySelector("#clave").value,
+                    nombre: document.querySelector("#nombre").value,
+                    tarjeta_id: document.querySelector("#tarjeta_id").value
+                };
+
+                const response = await fetch("/cgi-bin/editar_usuario.pl", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(datos)
+                });
+
+                if (response.ok) {
+                    document.querySelector("#mensaje").classList.remove("hidden");
+                    setTimeout(() => {
+                        document.querySelector("#mensaje").classList.add("hidden");
+                        cargarDatos(); // Recargar datos
+                    }, 3000);
+                } else {
+                    alert("No se pudieron guardar los cambios.");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
