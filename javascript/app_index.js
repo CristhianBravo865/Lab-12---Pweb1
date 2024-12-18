@@ -66,7 +66,7 @@ function verificarUsuario() {
         // Verificar si el tipo de usuario es "propietario"
         var tipoUsuario = getCookie('tipo_usuario');
         var menu = document.getElementById('logout-menu');
-        
+
         if (tipoUsuario === 'propietario') {
             // DASHBOARD
             var dashboardOption = document.createElement('button');
@@ -75,6 +75,12 @@ function verificarUsuario() {
             dashboardOption.classList.add('dashboard-button');
             menu.appendChild(dashboardOption);
 
+            var updateOption = document.createElement('button');
+            updateOption.textContent = 'Descipcion de Usuario';
+            updateOption.onclick = function () { window.location.href = '/update_descripcion.html'; };
+            updateOption.classList.add('update-button');
+            menu.appendChild(updateOption);
+
             var logoutOption = document.createElement('button');
             logoutOption.id = 'logout-button';
             logoutOption.textContent = 'Cerrar sesión';
@@ -82,6 +88,12 @@ function verificarUsuario() {
             logoutOption.classList.add('logout-button');
             menu.appendChild(logoutOption);
         } else if (tipoUsuario === 'usuario') { // OPCIONES PARA USUARIO NORMAL
+            var updateOption = document.createElement('button');
+            updateOption.textContent = 'Descipcion de Usuario';
+            updateOption.onclick = function () { window.location.href = '/update_descripcion.html'; };
+            updateOption.classList.add('update-button');
+            menu.appendChild(updateOption);
+
             var logoutOption = document.createElement('button');
             logoutOption.id = 'logout-button';
             logoutOption.textContent = 'Cerrar sesión';
