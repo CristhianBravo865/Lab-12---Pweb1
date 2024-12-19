@@ -1,0 +1,29 @@
+.preguntas {
+  margin-top: 20px;
+}
+
+.preguntas h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.preguntas .input-group {
+  margin-bottom: 15px;
+}
+
+.preguntas .input-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #000;
+}
+
+.preguntas .input-label {
+  width: 95%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.error {
+  color: rgb(236, 17, 17);
+}
