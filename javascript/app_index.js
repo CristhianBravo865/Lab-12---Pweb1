@@ -43,7 +43,7 @@ function mostrarLibros(librosMostrar) {
         button.classList.add('add-to-cart');
         button.innerHTML = '<img src="/images/carrito-de-compras.png" alt="Carrito" class="cart-icon"> Añadir';
         button.onclick = function () {
-            añadirAlCarrito(libro);
+            añadirAlCarrito(libro.id);
         };
         card.appendChild(button);
 
@@ -52,12 +52,15 @@ function mostrarLibros(librosMostrar) {
 }
 
 // Función para añadir un libro al carrito
-function añadirAlCarrito(libro) {
-    var libroExistente = carrito.find(item => item.nombre === libro.nombre);
+function añadirAlCarrito(libroId) {
+    var libroExistente = carrito.find(item => item.id === libroId);
     if (libroExistente) {
         libroExistente.cantidad += 1;
     } else {
-        carrito.push({ ...libro, cantidad: 1 });
+        var libro = libros.find(libro => libro.id === libroId);
+        if (libro) {
+            carrito.push({ ...libro, cantidad: 1 });
+        }
     }
     actualizarCarrito();
 }
@@ -79,9 +82,9 @@ function actualizarCarrito() {
 
         li.innerHTML = `
             ${item.nombre} - S/ ${item.precio} x ${item.cantidad}
-            <button class="cart-action" onclick="cambiarCantidad(${item.nombre}, 1)">+</button>
-            <button class="cart-action" onclick="cambiarCantidad(${item.nombre}, -1)">-</button>
-            <button class="cart-action remove" onclick="eliminarDelCarrito(${item.nombre})">Eliminar</button>
+            <button class="cart-action" onclick="cambiarCantidad(${item.id}, 1)">+</button>
+            <button class="cart-action" onclick="cambiarCantidad(${item.id}, -1)">-</button>
+            <button class="cart-action remove" onclick="eliminarDelCarrito(${item.id})">Eliminar</button>
         `;
 
         cartItemsList.appendChild(li);
@@ -92,12 +95,12 @@ function actualizarCarrito() {
 }
 
 // Función para cambiar la cantidad de un libro en el carrito
-function cambiarCantidad(nombre, cambio) {
-    var libro = carrito.find(item => item.nombre === nombre);
+function cambiarCantidad(libroId, cambio) {
+    var libro = carrito.find(item => item.id === libroId);
     if (libro) {
         libro.cantidad += cambio;
         if (libro.cantidad <= 0) {
-            eliminarDelCarrito(nombre);
+            eliminarDelCarrito(libroId);
         } else {
             actualizarCarrito();
         }
@@ -105,8 +108,8 @@ function cambiarCantidad(nombre, cambio) {
 }
 
 // Función para eliminar un libro del carrito
-function eliminarDelCarrito(nombre) {
-    carrito = carrito.filter(item => item.nombre !== nombre);
+function eliminarDelCarrito(libroId) {
+    carrito = carrito.filter(item => item.id !== libroId);
     actualizarCarrito();
 }
 
@@ -129,8 +132,6 @@ window.onload = function () {
     verificarUsuario(); // Verificar si el usuario está logueado
 };
 
-
-
 // Función para filtrar los libros por el nombre
 function buscarLibros() {
     var query = document.getElementById('search-input').value.toLowerCase();
@@ -148,18 +149,16 @@ function verificarUsuario() {
 
     if (nombreUsuario) {
         loginButton.innerHTML = `<button id="user-button" onclick="toggleMenu()">${decodeURIComponent(nombreUsuario)}</button>`;
-        
+
         var tipoUsuario = getCookie('tipo_usuario');
         menu.innerHTML = ''; // Limpiar menú antes de agregar opciones
 
         if (tipoUsuario === 'propietario') {
-            // Opciones específicas para el propietario
             menu.innerHTML += `
                 <button class="dashboard-button" onclick="window.location.href='/dashboard.html'">Dashboard</button>
                 <button class="update-button" onclick="window.location.href='/update_descripcion.html'">Descripción de Usuario</button>
             `;
         } else if (tipoUsuario === 'usuario') {
-            // Opciones para usuario estándar
             menu.innerHTML += `
                 <button class="update-button" onclick="window.location.href='/update_descripcion.html'">Descripción de Usuario</button>
             `;
@@ -204,15 +203,8 @@ function setCookie(name, value, hours) {
 
 // Función para cerrar sesión
 function cerrarSesion() {
-    // Eliminar cookies de sesión
     setCookie('nombre_usuario', '', -1);
     setCookie('login_correo', '', -1);
     setCookie('tipo_usuario', '', -1);
     window.location.href = '../index.html'; // Redirigir al inicio
 }
-
-// Llamar a la función cargarLibros cuando la página se haya cargado
-window.onload = function () {
-    cargarLibros();
-    verificarUsuario(); // Verificar si el usuario está logueado
-};

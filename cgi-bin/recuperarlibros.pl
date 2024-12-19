@@ -23,13 +23,14 @@ my $dbh = DBI->connect($dsn, $username, $password, {
 }) or die "No se pudo conectar a la base de datos: $DBI::errstr\n";
 
 # Preparar y ejecutar la consulta para obtener los libros
-my $sth = $dbh->prepare("SELECT nombre, imagen, precio FROM libros");
+my $sth = $dbh->prepare("SELECT id, nombre, imagen, precio FROM libros");
 $sth->execute();
 
 # Recoger los resultados
 my @libros;
 while (my $row = $sth->fetchrow_hashref) {
     push @libros, {
+        id => $row->{id},
         nombre => $row->{nombre},
         imagen => $row->{imagen},
         precio => $row->{precio},
