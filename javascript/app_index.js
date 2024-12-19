@@ -53,7 +53,12 @@ function mostrarLibros(librosMostrar) {
 
 // Función para añadir un libro al carrito
 function añadirAlCarrito(libro) {
-    carrito.push(libro);
+    var libroExistente = carrito.find(item => item.nombre === libro.nombre);
+    if (libroExistente) {
+        libroExistente.cantidad += 1;
+    } else {
+        carrito.push({ ...libro, cantidad: 1 });
+    }
     actualizarCarrito();
 }
 
@@ -66,16 +71,43 @@ function actualizarCarrito() {
     cartItemsList.innerHTML = '';
     var total = 0;
 
-    carrito.forEach(function (item, index) {
-        total += item.precio;
+    carrito.forEach(function (item) {
+        total += item.precio * item.cantidad;
 
         var li = document.createElement('li');
-        li.textContent = `${item.nombre} - S/ ${item.precio}`;
+        li.classList.add('cart-item');
+
+        li.innerHTML = `
+            ${item.nombre} - S/ ${item.precio} x ${item.cantidad}
+            <button class="cart-action" onclick="cambiarCantidad(${item.nombre}, 1)">+</button>
+            <button class="cart-action" onclick="cambiarCantidad(${item.nombre}, -1)">-</button>
+            <button class="cart-action remove" onclick="eliminarDelCarrito(${item.nombre})">Eliminar</button>
+        `;
+
         cartItemsList.appendChild(li);
     });
 
     cartTotal.textContent = total.toFixed(2);
-    cartItemsCount.textContent = carrito.length;
+    cartItemsCount.textContent = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+}
+
+// Función para cambiar la cantidad de un libro en el carrito
+function cambiarCantidad(nombre, cambio) {
+    var libro = carrito.find(item => item.nombre === nombre);
+    if (libro) {
+        libro.cantidad += cambio;
+        if (libro.cantidad <= 0) {
+            eliminarDelCarrito(nombre);
+        } else {
+            actualizarCarrito();
+        }
+    }
+}
+
+// Función para eliminar un libro del carrito
+function eliminarDelCarrito(nombre) {
+    carrito = carrito.filter(item => item.nombre !== nombre);
+    actualizarCarrito();
 }
 
 // Función para mostrar/ocultar el menú desplegable del carrito
@@ -96,6 +128,8 @@ window.onload = function () {
     cargarLibros();
     verificarUsuario(); // Verificar si el usuario está logueado
 };
+
+
 
 // Función para filtrar los libros por el nombre
 function buscarLibros() {
