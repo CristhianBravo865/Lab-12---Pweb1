@@ -47,8 +47,8 @@ if (!$id || !$correo || !$clave || !$nombre) {
 }
 
 # Actualizar los datos del usuario
-my $sth = $dbh->prepare("UPDATE usuario SET login_correo = ?, login_clave = ?, nombre = ?, tarjeta_id = ? WHERE id = ?");
-my $result_usuario = $sth->execute($correo, $clave, $nombre, $tarjeta_id, $id);
+my $sth = $dbh->prepare("UPDATE usuario SET login_correo = ?, login_clave = ?, nombre = ? WHERE id = ?");
+my $result_usuario = $sth->execute($correo, $clave, $nombre, $id);
 
 # Actualizar o insertar tarjeta
 if ($tarjeta_id) {
@@ -63,11 +63,19 @@ if ($tarjeta_id) {
         # Insertar nueva tarjeta
         my $sth_insert_tarjeta = $dbh->prepare("INSERT INTO tarjeta (numero, tipo, fecha_expiracion, cvv, usuario_id) VALUES (?, ?, ?, ?, ?)");
         $sth_insert_tarjeta->execute($numero_tarjeta, $tipo_tarjeta, $fecha_expiracion, $cvv, $id);
+        $tarjeta_id = $dbh->{mysql_insertid}; # Obtener el ID de la tarjeta insertada
     }
 } else {
     # Crear una nueva tarjeta si no existe tarjeta_id
     my $sth_insert_tarjeta = $dbh->prepare("INSERT INTO tarjeta (numero, tipo, fecha_expiracion, cvv, usuario_id) VALUES (?, ?, ?, ?, ?)");
     $sth_insert_tarjeta->execute($numero_tarjeta, $tipo_tarjeta, $fecha_expiracion, $cvv, $id);
+    $tarjeta_id = $dbh->{mysql_insertid}; # Obtener el ID de la tarjeta insertada
+}
+
+# Vincular la tarjeta al usuario
+if ($tarjeta_id) {
+    my $sth_update_usuario = $dbh->prepare("UPDATE usuario SET tarjeta_id = ? WHERE id = ?");
+    $sth_update_usuario->execute($tarjeta_id, $id);
 }
 
 # Responder con éxito o error

@@ -80,8 +80,6 @@
         <input type="password" name="clave" id="clave" required>
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" id="nombre" required>
-        <label for="tarjeta_id">Tarjeta ID:</label>
-        <input type="text" name="tarjeta_id" id="tarjeta_id" readonly>
         <!-- Datos de la tarjeta -->
         <h3>Información de la Tarjeta</h3>
         <label for="numero_tarjeta">Número de Tarjeta:</label>
@@ -97,6 +95,7 @@
         <input type="text" name="cvv" id="cvv">
         
         <button type="button" id="guardar">Guardar Cambios</button>
+        <button type="button" id="index">Index</button>
     </form>
 
     <p id="mensaje" class="hidden">¡Datos actualizados con éxito!</p>
@@ -132,12 +131,13 @@
                         tbody.innerHTML = `
                             <tr><td>ID</td><td>${datos.id}</td></tr>
                             <tr><td>Correo</td><td>${datos.login_correo}</td></tr>
-                            <tr><td>Clave</td><td>********</td></tr>
                             <tr><td>Nombre</td><td>${datos.nombre}</td></tr>
                             <tr><td>Tarjeta ID</td><td>${datos.tarjeta_id || "No registrada"}</td></tr>
-                            <tr><td>Número de Tarjeta</td><td>${datos.numero_tarjeta || "No disponible"}</td></tr>
-                            <tr><td>Tipo de Tarjeta</td><td>${datos.tipo_tarjeta || "No disponible"}</td></tr>
-                            <tr><td>Fecha de Expiración</td><td>${datos.fecha_expiracion || "No disponible"}</td></tr>
+                            <!--<tr><td>Tarjeta ID</td><td>${datos.tarjeta_id || "No registrada"}</td></tr>
+                            <tr><td>Número de Tarjeta</td><td>${datos.tarjeta_numero || "No disponible"}</td></tr>
+                            <tr><td>Tipo de Tarjeta</td><td>${datos.tarjeta_tipo || "No disponible"}</td></tr>
+                            <tr><td>Fecha de Expiración</td><td>${datos.tarjeta_fecha_expiracion || "No disponible"}</td></tr>
+                            -->
                         `;
 
                         // Rellenar formulario para edición
@@ -145,7 +145,6 @@
                         document.querySelector("#correo").value = datos.login_correo;
                         document.querySelector("#clave").value = datos.login_clave;
                         document.querySelector("#nombre").value = datos.nombre;
-                        document.querySelector("#tarjeta_id").value = datos.tarjeta_id || "";
                         document.querySelector("#numero_tarjeta").value = datos.numero_tarjeta || "";
                         document.querySelector("#tipo_tarjeta").value = datos.tipo_tarjeta || "";
                         document.querySelector("#fecha_expiracion").value = datos.fecha_expiracion || "";
@@ -191,6 +190,9 @@
                     alert("No se pudieron guardar los cambios.");
                 }
             });
+        });
+        document.getElementById("index").addEventListener("click", function () {
+            window.location.href = "index.html";
         });
     </script>
 </body>
