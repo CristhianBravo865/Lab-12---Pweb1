@@ -1,4 +1,5 @@
-var libros = []; // Almacenar los libros
+var libros = [];
+var carrito = [];
 
 // Función para cargar los libros usando AJAX desde recuperarlibros.pl
 function cargarLibros() {
@@ -41,11 +42,60 @@ function mostrarLibros(librosMostrar) {
         var button = document.createElement('button');
         button.classList.add('add-to-cart');
         button.innerHTML = '<img src="/images/carrito-de-compras.png" alt="Carrito" class="cart-icon"> Añadir';
+        button.onclick = function () {
+            añadirAlCarrito(libro);
+        };
         card.appendChild(button);
 
         container.appendChild(card);
     });
 }
+
+// Función para añadir un libro al carrito
+function añadirAlCarrito(libro) {
+    carrito.push(libro);
+    actualizarCarrito();
+}
+
+// Actualizar el contenido y el total del carrito
+function actualizarCarrito() {
+    var cartItemsList = document.getElementById('cart-items-list');
+    var cartTotal = document.getElementById('cart-total');
+    var cartItemsCount = document.getElementById('cart-items-count');
+
+    cartItemsList.innerHTML = '';
+    var total = 0;
+
+    carrito.forEach(function (item, index) {
+        total += item.precio;
+
+        var li = document.createElement('li');
+        li.textContent = `${item.nombre} - S/ ${item.precio}`;
+        cartItemsList.appendChild(li);
+    });
+
+    cartTotal.textContent = total.toFixed(2);
+    cartItemsCount.textContent = carrito.length;
+}
+
+// Función para mostrar/ocultar el menú desplegable del carrito
+function toggleCart() {
+    var cartMenu = document.getElementById('cart-menu');
+    cartMenu.style.display = (cartMenu.style.display === 'none' || cartMenu.style.display === '') ? 'block' : 'none';
+}
+
+// Finalizar la compra
+function finalizarCompra() {
+    alert('Compra finalizada. ¡Gracias por tu compra!');
+    carrito = [];
+    actualizarCarrito();
+}
+
+// Llamar a la función cargarLibros cuando la página se haya cargado
+window.onload = function () {
+    cargarLibros();
+    verificarUsuario(); // Verificar si el usuario está logueado
+};
 
 // Función para filtrar los libros por el nombre
 function buscarLibros() {
@@ -56,60 +106,39 @@ function buscarLibros() {
     mostrarLibros(librosFiltrados);
 }
 
+// Función para verificar el usuario logueado y mostrar opciones personalizadas
 function verificarUsuario() {
     var nombreUsuario = getCookie('nombre_usuario'); // Recuperar nombre del usuario de la cookie
     var loginButton = document.getElementById('login-button');
+    var menu = document.getElementById('logout-menu');
 
     if (nombreUsuario) {
-        loginButton.innerHTML = '<button id="user-button" onclick="toggleMenu()">' + decodeURIComponent(nombreUsuario) + '</button>'; // Decodificar el nombre de la cookie
-
-        // Verificar si el tipo de usuario es "propietario"
+        loginButton.innerHTML = `<button id="user-button" onclick="toggleMenu()">${decodeURIComponent(nombreUsuario)}</button>`;
+        
         var tipoUsuario = getCookie('tipo_usuario');
-        var menu = document.getElementById('logout-menu');
+        menu.innerHTML = ''; // Limpiar menú antes de agregar opciones
 
         if (tipoUsuario === 'propietario') {
-            // DASHBOARD
-            var dashboardOption = document.createElement('button');
-            dashboardOption.textContent = 'Dashboard';
-            dashboardOption.onclick = function () { window.location.href = '/dashboard.html'; };
-            dashboardOption.classList.add('dashboard-button');
-            menu.appendChild(dashboardOption);
-
-            var updateOption = document.createElement('button');
-            updateOption.textContent = 'Descipcion de Usuario';
-            updateOption.onclick = function () { window.location.href = '/update_descripcion.html'; };
-            updateOption.classList.add('update-button');
-            menu.appendChild(updateOption);
-
-            var logoutOption = document.createElement('button');
-            logoutOption.id = 'logout-button';
-            logoutOption.textContent = 'Cerrar sesión';
-            logoutOption.onclick = cerrarSesion;
-            logoutOption.classList.add('logout-button');
-            menu.appendChild(logoutOption);
-        } else if (tipoUsuario === 'usuario') { // OPCIONES PARA USUARIO NORMAL
-            var updateOption = document.createElement('button');
-            updateOption.textContent = 'Descipcion de Usuario';
-            updateOption.onclick = function () { window.location.href = '/update_descripcion.html'; };
-            updateOption.classList.add('update-button');
-            menu.appendChild(updateOption);
-
-            var logoutOption = document.createElement('button');
-            logoutOption.id = 'logout-button';
-            logoutOption.textContent = 'Cerrar sesión';
-            logoutOption.onclick = cerrarSesion;
-            logoutOption.classList.add('logout-button');
-            menu.appendChild(logoutOption);
+            // Opciones específicas para el propietario
+            menu.innerHTML += `
+                <button class="dashboard-button" onclick="window.location.href='/dashboard.html'">Dashboard</button>
+                <button class="update-button" onclick="window.location.href='/update_descripcion.html'">Descripción de Usuario</button>
+            `;
+        } else if (tipoUsuario === 'usuario') {
+            // Opciones para usuario estándar
+            menu.innerHTML += `
+                <button class="update-button" onclick="window.location.href='/update_descripcion.html'">Descripción de Usuario</button>
+            `;
         }
 
-        document.getElementById('logout-menu').style.display = 'none'; // Iniciar con el menú oculto
+        menu.innerHTML += `
+            <button id="logout-button" class="logout-button" onclick="cerrarSesion()">Cerrar sesión</button>
+        `;
+        menu.style.display = 'none'; // Iniciar con el menú oculto
     } else {
         loginButton.innerHTML = '<button onclick="window.location.href=\'../login.html\'">Login</button>';
     }
 }
-
-
-
 
 // Función para mostrar/ocultar el menú desplegable
 function toggleMenu() {
@@ -122,9 +151,8 @@ function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length)); // Decodificar el valor de la cookie
+        var c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
     }
     return null;
 }
