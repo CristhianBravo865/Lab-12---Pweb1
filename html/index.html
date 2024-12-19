@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Virtual</title>
     <link rel="stylesheet" href="../css/styles.css">
-    <script src="../js/app_index.js" defer></script> 
+    <script src="../js/app_index.js" defer></script>
 </head>
-
 <body>
     <!-- Header -->
     <header>
         <div id="header-container">
-            <!-- Logo -->
             <div id="logo" onclick="location.reload();">
                 <img src="/images/logo_principal.png" alt="Biblioteca Logo">
             </div>
-
-            <!-- Barra de búsqueda -->
             <div id="search-bar">
                 <input type="text" id="search-input" placeholder="Buscar libros...">
                 <button onclick="buscarLibros()">Buscar</button>
             </div>
+<<<<<<< HEAD
 
             <!-- Botón de login -->
             <div id="login-button">
@@ -35,17 +31,29 @@
 
             <!-- Carrito de compras -->
             <div id="cart-button" onclick="window.location.href='Carrito.html'">
+=======
+            <div id="login-button"></div>
+            <div id="logout-menu"></div>
+            <div id="cart-button" onclick="toggleCart()">
+>>>>>>> origin/base
                 <img src="/images/carrito-de-compras.png" alt="Carrito de Compras">
+                <div id="cart-items-count">0</div>
             </div>
         </div>
     </header>
 
+    <!-- Menú desplegable del carrito -->
+    <div id="cart-menu" style="display: none;">
+        <h3>Carrito</h3>
+        <ul id="cart-items-list"></ul>
+        <p>Total: S/ <span id="cart-total">0.00</span></p>
+        <button onclick="finalizarCompra()">Finalizar Compra</button>
+    </div>
+
     <!-- Main content -->
     <main>
         <h2>Libros Disponibles</h2>
-        <div id="books-container" class="books-grid">
-            <!-- Los libros se cargarán aquí dinámicamente -->
-        </div>
+        <div id="books-container" class="books-grid"></div>
     </main>
 
     <!-- Footer -->
@@ -53,5 +61,4 @@
         <p>Cristhian Bravo | Mark Hancco </p>
     </footer>
 </body>
-
 </html>

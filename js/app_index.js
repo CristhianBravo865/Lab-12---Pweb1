@@ -1,4 +1,5 @@
-var libros = []; // Almacenar los libros
+var libros = [];
+var carrito = [];
 
 // Función para cargar los libros usando AJAX desde recuperarlibros.pl
 function cargarLibros() {
@@ -41,11 +42,120 @@ function mostrarLibros(librosMostrar) {
         var button = document.createElement('button');
         button.classList.add('add-to-cart');
         button.innerHTML = '<img src="/images/carrito-de-compras.png" alt="Carrito" class="cart-icon"> Añadir';
+        button.onclick = function () {
+            añadirAlCarrito(libro.id);
+        };
         card.appendChild(button);
 
         container.appendChild(card);
     });
 }
+
+// Función para añadir un libro al carrito
+function añadirAlCarrito(libroId) {
+    var libroExistente = carrito.find(item => item.id === libroId);
+    if (libroExistente) {
+        libroExistente.cantidad += 1;
+    } else {
+        var libro = libros.find(libro => libro.id === libroId);
+        if (libro) {
+            carrito.push({ ...libro, cantidad: 1 });
+        }
+    }
+    actualizarCarrito();
+}
+
+// Actualizar el contenido y el total del carrito
+function actualizarCarrito() {
+    var cartItemsList = document.getElementById('cart-items-list');
+    var cartTotal = document.getElementById('cart-total');
+    var cartItemsCount = document.getElementById('cart-items-count');
+
+    cartItemsList.innerHTML = '';
+    var total = 0;
+
+    carrito.forEach(function (item) {
+        total += item.precio * item.cantidad;
+
+        var li = document.createElement('li');
+        li.classList.add('cart-item');
+
+        li.innerHTML = `
+            ${item.nombre} - S/ ${item.precio} x ${item.cantidad}
+            <button class="cart-action" onclick="cambiarCantidad(${item.id}, 1)">+</button>
+            <button class="cart-action" onclick="cambiarCantidad(${item.id}, -1)">-</button>
+            <button class="cart-action remove" onclick="eliminarDelCarrito(${item.id})">Eliminar</button>
+        `;
+
+        cartItemsList.appendChild(li);
+    });
+
+    cartTotal.textContent = total.toFixed(2);
+    cartItemsCount.textContent = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+}
+
+// Función para cambiar la cantidad de un libro en el carrito
+function cambiarCantidad(libroId, cambio) {
+    var libro = carrito.find(item => item.id === libroId);
+    if (libro) {
+        libro.cantidad += cambio;
+        if (libro.cantidad <= 0) {
+            eliminarDelCarrito(libroId);
+        } else {
+            actualizarCarrito();
+        }
+    }
+}
+
+// Función para eliminar un libro del carrito
+function eliminarDelCarrito(libroId) {
+    carrito = carrito.filter(item => item.id !== libroId);
+    actualizarCarrito();
+}
+
+// Función para mostrar/ocultar el menú desplegable del carrito
+function toggleCart() {
+    var cartMenu = document.getElementById('cart-menu');
+    cartMenu.style.display = (cartMenu.style.display === 'none' || cartMenu.style.display === '') ? 'block' : 'none';
+}
+
+// Finalizar la compra
+function finalizarCompra() {
+    var nombreUsuario = getCookie('nombre_usuario');
+    if (!nombreUsuario) {
+        alert("Debe iniciar sesión para realizar compras");
+    } else {
+        // Enviar el nombre de usuario a finalizarCompra.pl
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/cgi-bin/finalizarCompra.pl', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+
+                if (response.tarjeta) {
+                    alert(`Se realizó el cargo a la tarjeta con número *****${response.tarjeta.slice(-3)}`);
+                } else {
+                    alert("Usted no tiene ninguna tarjeta asociada");
+                }
+
+                // Vaciar el carrito después de finalizar la compra
+                carrito = [];
+                actualizarCarrito();
+            }
+        };
+
+        // Enviar el nombre de usuario al servidor
+        xhr.send(`usuario=${encodeURIComponent(nombreUsuario)}`);
+    }
+}
+
+
+// Llamar a la función cargarLibros cuando la página se haya cargado
+window.onload = function () {
+    cargarLibros();
+    verificarUsuario(); // Verificar si el usuario está logueado
+};
 
 // Función para filtrar los libros por el nombre
 function buscarLibros() {
@@ -56,48 +166,37 @@ function buscarLibros() {
     mostrarLibros(librosFiltrados);
 }
 
+// Función para verificar el usuario logueado y mostrar opciones personalizadas
 function verificarUsuario() {
     var nombreUsuario = getCookie('nombre_usuario'); // Recuperar nombre del usuario de la cookie
     var loginButton = document.getElementById('login-button');
+    var menu = document.getElementById('logout-menu');
 
     if (nombreUsuario) {
-        loginButton.innerHTML = '<button id="user-button" onclick="toggleMenu()">' + decodeURIComponent(nombreUsuario) + '</button>'; // Decodificar el nombre de la cookie
+        loginButton.innerHTML = `<button id="user-button" onclick="toggleMenu()">${decodeURIComponent(nombreUsuario)}</button>`;
 
-        // Verificar si el tipo de usuario es "propietario"
         var tipoUsuario = getCookie('tipo_usuario');
-        var menu = document.getElementById('logout-menu');
-        
-        if (tipoUsuario === 'propietario') {
-            // DASHBOARD
-            var dashboardOption = document.createElement('button');
-            dashboardOption.textContent = 'Dashboard';
-            dashboardOption.onclick = function () { window.location.href = '/dashboard.html'; };
-            dashboardOption.classList.add('dashboard-button');
-            menu.appendChild(dashboardOption);
+        menu.innerHTML = ''; // Limpiar menú antes de agregar opciones
 
-            var logoutOption = document.createElement('button');
-            logoutOption.id = 'logout-button';
-            logoutOption.textContent = 'Cerrar sesión';
-            logoutOption.onclick = cerrarSesion;
-            logoutOption.classList.add('logout-button');
-            menu.appendChild(logoutOption);
-        } else if (tipoUsuario === 'usuario') { // OPCIONES PARA USUARIO NORMAL
-            var logoutOption = document.createElement('button');
-            logoutOption.id = 'logout-button';
-            logoutOption.textContent = 'Cerrar sesión';
-            logoutOption.onclick = cerrarSesion;
-            logoutOption.classList.add('logout-button');
-            menu.appendChild(logoutOption);
+        if (tipoUsuario === 'propietario') {
+            menu.innerHTML += `
+                <button class="dashboard-button" onclick="window.location.href='/dashboard.html'">Dashboard</button>
+                <button class="update-button" onclick="window.location.href='/update_descripcion.html'">Descripción de Usuario</button>
+            `;
+        } else if (tipoUsuario === 'usuario') {
+            menu.innerHTML += `
+                <button class="update-button" onclick="window.location.href='/update_descripcion.html'">Descripción de Usuario</button>
+            `;
         }
 
-        document.getElementById('logout-menu').style.display = 'none'; // Iniciar con el menú oculto
+        menu.innerHTML += `
+            <button id="logout-button" class="logout-button" onclick="cerrarSesion()">Cerrar sesión</button>
+        `;
+        menu.style.display = 'none'; // Iniciar con el menú oculto
     } else {
         loginButton.innerHTML = '<button onclick="window.location.href=\'../login.html\'">Login</button>';
     }
 }
-
-
-
 
 // Función para mostrar/ocultar el menú desplegable
 function toggleMenu() {
@@ -110,9 +209,8 @@ function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length)); // Decodificar el valor de la cookie
+        var c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
     }
     return null;
 }
@@ -130,15 +228,8 @@ function setCookie(name, value, hours) {
 
 // Función para cerrar sesión
 function cerrarSesion() {
-    // Eliminar cookies de sesión
     setCookie('nombre_usuario', '', -1);
     setCookie('login_correo', '', -1);
     setCookie('tipo_usuario', '', -1);
     window.location.href = '../index.html'; // Redirigir al inicio
 }
-
-// Llamar a la función cargarLibros cuando la página se haya cargado
-window.onload = function () {
-    cargarLibros();
-    verificarUsuario(); // Verificar si el usuario está logueado
-};
