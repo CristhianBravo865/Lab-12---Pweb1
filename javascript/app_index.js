@@ -121,10 +121,35 @@ function toggleCart() {
 
 // Finalizar la compra
 function finalizarCompra() {
-    alert('Compra finalizada. ¡Gracias por tu compra!');
-    carrito = [];
-    actualizarCarrito();
+    var nombreUsuario = getCookie('nombre_usuario');
+    if (!nombreUsuario) {
+        alert("Debe iniciar sesión para realizar compras");
+    } else {
+        // Enviar el nombre de usuario a finalizarCompra.pl
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/cgi-bin/finalizarCompra.pl', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+
+                if (response.tarjeta) {
+                    alert(`Se realizó el cargo a la tarjeta con número *****${response.tarjeta.slice(-3)}`);
+                } else {
+                    alert("Usted no tiene ninguna tarjeta asociada");
+                }
+
+                // Vaciar el carrito después de finalizar la compra
+                carrito = [];
+                actualizarCarrito();
+            }
+        };
+
+        // Enviar el nombre de usuario al servidor
+        xhr.send(`usuario=${encodeURIComponent(nombreUsuario)}`);
+    }
 }
+
 
 // Llamar a la función cargarLibros cuando la página se haya cargado
 window.onload = function () {

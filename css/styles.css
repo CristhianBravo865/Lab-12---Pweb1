@@ -127,17 +127,17 @@ header {
 /* Estilo general del menú desplegable */
 #cart-menu {
     position: absolute;
-    top: 60px; /* Ajusta según la altura de tu header */
-    right: 10px; /* Separación del borde derecho */
+    top: 60px; 
+    right: 10px; 
     width: 300px;
-    background-color: #2c2c2c; /* Fondo oscuro */
-    color: #ffffff; /* Texto claro */
-    border: 1px solid #444444; /* Borde para separar */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para profundidad */
+    background-color: #ffffff; 
+    color: #252424; 
+    border: 1px solid #444444; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     z-index: 1000;
     padding: 15px;
-    display: none; /* Oculto por defecto */
+    display: none; 
 }
 
 /* Título del carrito */
@@ -182,14 +182,13 @@ header {
     background-color: #777777; /* Cambio de color al pasar el mouse */
 }
 
-/* Botón de eliminar ítem */
 .cart-action.remove {
     background-color: #d9534f;
     color: #ffffff;
 }
 
 .cart-action.remove:hover {
-    background-color: #c9302c; /* Color más oscuro al pasar el mouse */
+    background-color: #c9302c; 
 }
 
 /* Total del carrito */
@@ -201,7 +200,7 @@ header {
 /* Botón de finalizar compra */
 #cart-menu button {
     width: 100%;
-    background-color: #28a745; /* Verde */
+    background-color: #ffa41c; 
     color: #ffffff;
     border: none;
     border-radius: 5px;
@@ -212,7 +211,7 @@ header {
 }
 
 #cart-menu button:hover {
-    background-color: #218838; /* Color más oscuro al pasar el mouse */
+    background-color: #be7b15;
 }
 
 /* Mainnn*/
